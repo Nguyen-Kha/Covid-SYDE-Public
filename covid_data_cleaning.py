@@ -4,12 +4,11 @@
 ##################   D E M O G R A P H I C S   ################
 
 # Where is your primary city of residence?
-
 # Where is your primary country of residence?
-
 # In which city were you primarily located in during the period of quarantine (March 13 - April 26)
-
 # In which country were you primarily located in during the period of quarantine (March 13 - April 26)
+def capitalize_string(word):
+    return word.capitalize()
 
 
 
@@ -17,7 +16,19 @@
 
 # On average, how many hours of sleep did you get in a night [before quarantine]?
 def date_to_numbered_string(date):
-    if(date == '< 5'):
+    if(date == '0 - 1'):
+        return '0.5'
+    elif(date == '1 - 2'):
+        return '1.5'
+    elif(date == '< 2'):
+        return '1.5'
+    elif(date == '> 2'):
+        return '2.5'
+    elif(date == '2 - 3'):
+        return '2.5'
+    elif(date == '3 - 4'):
+        return '3.5'
+    elif(date == '< 5'):
         return '4.5'
     elif(date == '06-May'):
         return '5.5'
@@ -28,10 +39,12 @@ def date_to_numbered_string(date):
     elif(date == '09-Aug'):
         return '8.5'
     elif(date == '9 +'):
-        return 9.5
+        return '9.5'
 
 # Study Habits [before quarantine] 
 """ Potentially Reverse """
+def reverse_scale(number, scale_number=7):
+    return scale_number - number + 1    
 
 # Side Projects taking on [before quarantine]
 
