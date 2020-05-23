@@ -1,7 +1,7 @@
 import pandas as pd
 
 def rename_column_headers(df):
-    df.rename(columns = {
+    df = df.rename(columns = {
         'If you lived off campus, when did you move out of Waterloo': 'Move-Out Date',
         'If you stayed in Waterloo for the majority of the quarantine period, why?': 'Reasons for Staying in Waterloo',
         'If you were not in Waterloo for the majority of the quarantine period, why?': 'Reasons for Leaving Waterloo',
@@ -133,8 +133,8 @@ def rename_column_headers(df):
         'How often did you play video games?': 'Amount of Time Playing Video Games',
         'If you played Video Games, which ones did you play': 'Video Games Played',
         'Favourite TV Show / Movie / Web Series during quarantine': 'Favourite Entertainment Series',
-
     })
+    return df
 
 
 def clean_exam_difficulty(difficulty):
@@ -146,8 +146,13 @@ def clean_exam_difficulty(difficulty):
     else:
         return difficulty
 
-df_data_vis = pd.read_csv('')
-df_num = pd.read_csv('')
+def capitalize_string(word):
+    return word.capitalize()
+
+df_data_vis_std = pd.read_csv('')
+df_data_vis_original = pd.read_csv('')
+df_num_std = pd.read_csv('')
+df_num_original = pd.read_csv('')
 
 exam_difficulty_columns = [
     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
@@ -158,5 +163,13 @@ exam_difficulty_columns = [
 ]
 
 for columns in exam_difficulty_columns:
-    df_data_vis[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-    df_num[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+    df_data_vis_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+    df_data_vis_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+    df_num_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+    df_num_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+
+rename_column_headers(df_data_vis_std)
+rename_column_headers(df_data_vis_original)
+rename_column_headers(df_num_std)
+rename_column_headers(df_num_original)
+
