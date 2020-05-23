@@ -17,7 +17,7 @@ def clean_range_of_one(date):
         return '4 - 5'
     elif(date == '06-May'):
         return '5 - 6'
-    elif(date == '07-Jun'):
+    elif(date == '07-Jun'): 
         return '6 - 7'
     elif(date == '08-Jul'):
         return '7 - 8'
@@ -25,7 +25,5 @@ def clean_range_of_one(date):
         return '8 - 9'
     elif(date == '10-Sep'):
         return '9 - 10'
-    # elif(date.isNull) # or whatever it is for NaN
-    #     return # Whatever the mean is when we calculate it
     else:
         return date
