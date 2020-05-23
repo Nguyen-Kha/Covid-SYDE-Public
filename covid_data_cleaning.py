@@ -1,4 +1,7 @@
-
+"""
+This file is used to convert some CSV values into numerical values
+For data visulization purposes, use data_vis_cleaning.py
+"""
 
 
 ##################   D E M O G R A P H I C S   ################
@@ -88,17 +91,6 @@ def clean_range_of_two(value):
 # How long did the SYDE 261 exam take you to complete?
 # How long did the SYDE 285 Written portion take you to complete?
 
-# In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211] AND OTHERS
-def remove_easiest_and_hardest(rank):
-    if(rank == '1 (Hardest)'):
-        return '1'
-    elif(rank == '5 (Easiest)'):
-        return '5'
-    # elif(rank == 'N/A'):
-    #     return # Whatever the mean for this is after we calculate it beforehand
-    else:
-        return rank
-
 # Amount of hours spent studying for each exam [SYDE 211]
 def hours_of_studying_exams(hours):
     """ Use this to calculate average. Keep the original when doing the data stuff"""
@@ -112,13 +104,13 @@ def hours_of_studying_exams(hours):
         return '17'
     elif(hours == '20 - 24'):
         return '22'
-    elif(hours = '24 +'):
+    elif(hours == '24 +'):
         return '27'
     # else: # N/A or NaN
     #     return # the mean
 
-def calculate_mean(values): # Data frame?
-    # For loop and then size of dataframe column
+# def calculate_mean(values): # Data frame?
+#     # For loop and then size of dataframe column
 
 # Stress level during a timed exam
 
