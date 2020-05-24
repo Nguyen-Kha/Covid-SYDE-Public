@@ -147,12 +147,16 @@ def clean_exam_difficulty(difficulty):
         return difficulty
 
 def capitalize_string(word):
-    return word.capitalize()
+    if(word == 'US'):
+        word = 'United States'
+    return word.title()
 
 df_data_vis_std = pd.read_csv('')
 df_data_vis_original = pd.read_csv('')
 df_num_std = pd.read_csv('')
 df_num_original = pd.read_csv('')
+
+
 
 exam_difficulty_columns = [
     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
@@ -168,8 +172,22 @@ for columns in exam_difficulty_columns:
     df_num_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
     df_num_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
 
-rename_column_headers(df_data_vis_std)
-rename_column_headers(df_data_vis_original)
-rename_column_headers(df_num_std)
-rename_column_headers(df_num_original)
+df_data_vis_std = rename_column_headers(df_data_vis_std)
+df_data_vis_original = rename_column_headers(df_data_vis_original)
+df_num_std = rename_column_headers(df_num_std)
+df_num_original = rename_column_headers(df_num_original)
 
+titles_to_capitalize = [
+    'City of Cancelled Job',
+    'Country of Cancelled Job',
+    'City of Job',
+    'County of Job',
+    'Video Games Played',
+    'Favourite Entertainment Series'
+]
+
+for titles in titles_to_capitalize:
+    df_data_vis_std[titles_to_capitalize[titles]].apply(capitalize_string)
+    df_data_vis_original[titles_to_capitalize[titles]].apply(capitalize_string)
+    df_num_std[titles_to_capitalize[titles]].apply(capitalize_string)
+    df_num_original[titles_to_capitalize[titles]].apply(capitalize_string)
