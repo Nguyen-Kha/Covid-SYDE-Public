@@ -2,19 +2,17 @@
 This file is used to convert some CSV values into numerical values
 For data visulization purposes, use data_vis_cleaning.py
 """
+import pandas as pd
 
-
-##################   D E M O G R A P H I C S   ################
-
-# Where is your primary city of residence?
-# Where is your primary country of residence?
-# In which city were you primarily located in during the period of quarantine (March 13 - April 26)
-# In which country were you primarily located in during the period of quarantine (March 13 - April 26)
-def capitalize_string(word):
-    return word.capitalize()
 
 # How many courses were you taking?
-
+def clean_amount_courses(courses):
+    if(courses == '0 - 4'):
+        return 4
+    elif(courses == '7+'):
+        return 7
+    else: 
+        return courses
 
 
 ##################   B E F O R E   A N D   D U R I N G   Q U A R A N T I N E   ################
@@ -189,11 +187,6 @@ def clean_hours_of_assignments(hours):
         return hours
 
 
-
-##################   J O B S   /   C O - O P   ################
-
-
-
 ##################   M E N T A L   H E A L T H   ################
 
 # How has quarantine affected your mental health?
@@ -249,4 +242,13 @@ def clean_dating_video_games(time):
     else:
         return time
     
+////////////////////////////////////////////////////////////////////////////////////
+##################   H E L P E R S   ################
+
+def replace_nulls_with_mean(df, column_name):
+    mean = df[column_name].mean()
+    df[column_name].fillna(mean, inplace = True)
+    return df
+
+////////////////////////////////////////////////////////////////////////////////////
 
