@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def rename_column_headers(df):
     df = df.rename(columns = {
         'If you lived off campus, when did you move out of Waterloo': 'Move-Out Date',
@@ -146,10 +147,44 @@ def clean_exam_difficulty(difficulty):
     else:
         return difficulty
 
+def exam_difficulty_applymap(df):
+    df[['In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
+    "In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 223]",
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 261]',
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 283]',
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 285]'
+    ]] = df[[
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
+    "In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 223]",
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 261]',
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 283]',
+    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 285]'
+    ]].applymap(clean_exam_difficulty)
+    return df
+
 def capitalize_string(word):
     if(word == 'US'):
         word = 'United States'
+    elif(isinstance(word, float)):
+        return word
     return word.title()
+
+def capitalize_string_applymap(df):
+    df[['City of Cancelled Job',
+    'Country of Cancelled Job',
+    'City of Job',
+    'Country of Job',
+    'Video Games Played',
+    'Favourite Entertainment Series'
+    ]] = df[[
+    'City of Cancelled Job',
+    'Country of Cancelled Job',
+    'City of Job',
+    'Country of Job',
+    'Video Games Played',
+    'Favourite Entertainment Series'
+    ]].applymap(capitalize_string)
+    return df
 
 df_data_vis_std = pd.read_csv('')
 df_data_vis_original = pd.read_csv('')
@@ -158,36 +193,55 @@ df_num_original = pd.read_csv('')
 
 
 
-exam_difficulty_columns = [
-    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
-    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 223]',
-    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 261]',
-    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 283]',
-    'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 285]'
-]
+# exam_difficulty_columns = [
+#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
+#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 223]',
+#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 261]',
+#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 283]',
+#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 285]'
+# ]
 
-for columns in exam_difficulty_columns:
-    df_data_vis_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-    df_data_vis_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-    df_num_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-    df_num_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+# for columns in range (0, len(exam_difficulty_columns)):
+#     df_data_vis_std = df_data_vis_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+#     df_data_vis_original = df_data_vis_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+#     df_num_std = df_num_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+#     df_num_original = df_num_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
+
+df_data_vis_std = exam_difficulty_applymap(df_data_vis_std)
+df_data_vis_original = exam_difficulty_applymap(df_data_vis_original)
+df_num_std = exam_difficulty_applymap(df_num_std)
+df_num_original = exam_difficulty_applymap(df_num_original)
 
 df_data_vis_std = rename_column_headers(df_data_vis_std)
 df_data_vis_original = rename_column_headers(df_data_vis_original)
 df_num_std = rename_column_headers(df_num_std)
 df_num_original = rename_column_headers(df_num_original)
 
-titles_to_capitalize = [
-    'City of Cancelled Job',
-    'Country of Cancelled Job',
-    'City of Job',
-    'County of Job',
-    'Video Games Played',
-    'Favourite Entertainment Series'
-]
+# titles_to_capitalize = [
+#     'City of Cancelled Job',
+#     'Country of Cancelled Job',
+#     'City of Job',
+#     'County of Job',
+#     'Video Games Played',
+#     'Favourite Entertainment Series'
+# ]
 
-for titles in titles_to_capitalize:
-    df_data_vis_std[titles_to_capitalize[titles]].apply(capitalize_string)
-    df_data_vis_original[titles_to_capitalize[titles]].apply(capitalize_string)
-    df_num_std[titles_to_capitalize[titles]].apply(capitalize_string)
-    df_num_original[titles_to_capitalize[titles]].apply(capitalize_string)
+# for titles in range (0, len(titles_to_capitalize)):
+#     df_data_vis_std[titles_to_capitalize[titles]].apply(capitalize_string)
+#     df_data_vis_original[titles_to_capitalize[titles]].apply(capitalize_string)
+#     df_num_std[titles_to_capitalize[titles]].apply(capitalize_string)
+#     df_num_original[titles_to_capitalize[titles]].apply(capitalize_string)
+
+df_data_vis_std.head()
+
+df_data_vis_std = capitalize_string_applymap(df_data_vis_std)
+df_data_vis_original = capitalize_string_applymap(df_data_vis_original)
+df_num_std = capitalize_string_applymap(df_num_std)
+df_num_original = capitalize_string_applymap(df_num_original)
+
+
+path = r'...\csv\\'
+df_data_vis_std.to_csv(path + 'data_vis_std.csv')
+df_data_vis_original.to_csv(path + 'data_vis_text.csv')
+df_num_std.to_csv(path + 'analysis_std.csv')
+df_num_original.to_csv(path + 'analysis_text.csv')
