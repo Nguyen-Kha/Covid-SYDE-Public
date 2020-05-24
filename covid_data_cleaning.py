@@ -20,35 +20,42 @@ def capitalize_string(word):
 ##################   B E F O R E   A N D   D U R I N G   Q U A R A N T I N E   ################
 
 # On average, how many hours of sleep did you get in a night [before quarantine]?
-# Side Projects taking on [before quarantine]
 # On average, how many hours a day did you spend Eating & Cooking [before quarantine] ?
 # Hours spent "interneting" (Facebook, Instagram, Snapchat, Tiktok, Netflix, browsing, etc) in a day [before quarantine]
 def clean_range_of_one(date):
     """ Potentially change the return type to <int>"""
     if(date == '0 - 1'):
-        return '0.5'
+        return 0.5
     elif(date == '1 - 2' or date == '< 2' or date == '02-Jan'):
-        return '1.5'
+        return 1.5
     elif(date == '> 2'or date == '2 - 3' or date == '03-Feb'):
-        return '2.5'
+        return 2.5
     elif(date == '3 - 4' or date == '04-Mar'):
-        return '3.5'
-    elif(date == '< 5' or date == '05-Apr'):
-        return '4.5'
-    elif(date == '06-May'):
-        return '5.5'
+        return 3.5
+    elif(date == '< 5' or date == '05-Apr' or date == '4 - 5'):
+        return 4.5
+    elif(date == '06-May' or date == '> 5'):
+        return 5.5
     elif(date == '07-Jun' or date == '6 +'):
-        return '6.5'
+        return 6.5
     elif(date == '08-Jul'):
-        return '7.5'
+        return 7.5
     elif(date == '09-Aug'):
-        return '8.5'
+        return 8.5
     elif(date == '9 +' or date == '10-Sep'):
-        return '9.5'
-    # elif(date == '' ) # or whatever it is for NaN
-    #     return # Whatever the mean is when we calculate it
+        return 9.5
     else:
         return date
+
+# Side Projects taking on [before quarantine]
+# CR / NCR
+def clean_increase_value_by_one(value):
+    if(value == '> 2'):
+        return 3
+    elif(value == '6 +'):
+        return 6
+    else:
+        return value
 
 # Study Habits [before quarantine] 
 """ Potentially Reverse """
@@ -60,17 +67,17 @@ def reverse_scale(number, scale_number=7):
 def clean_range_of_two(value):
     """ Potentially change the return type to <int>"""
     if(value == '0 - 2'):
-        return '1'
+        return 1
     elif(value == '2 - 4' or value == '04-Feb'):
-        return '3'
+        return 3
     elif(value == '4 - 6' or value == '06-Apr'):
-        return '5'
+        return 5
     elif(value == '6 - 8' or value == '08-Jun'):
-        return '7'
+        return 7
     elif(value == '8 - 10' or value == '10-Aug'):
-        return '9'
+        return 9
     elif(value == '10 +'):
-        return '11'
+        return 11
     # elif(value == '' ) # or whatever it is for NaN
     #     return # Whatever the mean is when we calculate it
     else:
@@ -80,63 +87,106 @@ def clean_range_of_two(value):
 
 # How many many people have you interacted with on an average day with classes? (Interaction defined by having at least a short conversation with person)
 """ Mean range, remove people """
-
-
-
-
+def clean_people_interaction(people):
+    if(people == '0 - 2 people'):
+        return 1
+    elif(people == '3 - 5 people'):
+        return 4
+    elif(people == '6 - 10 people'):
+        return 8
+    elif(people =- '11 - 20 people'):
+        return 15
+    elif(people == '20 + people'):
+        return 25
+    else:
+        return None
+    
 
 ##################   E X A M S   A N D   A C A D E M I C S   ################
 """ Might not need to do these ones """
-# How long did you take to write each timed exam?
+
 # How long did the SYDE 261 exam take you to complete?
+def clean_261_exam_time(time):
+    if(time == 'Less than 2.5 hours'):
+        return 1.5
+    elif(time == '2.5 - 4 hours'):
+        return 3.25
+    elif(time == '4 - 6 hours'):
+        return 5
+    elif(time == '6 + hours'):
+        return 7
+    else:
+        return time
+
 # How long did the SYDE 285 Written portion take you to complete?
+def clean_285_exam_time(time):
+    if(time == 'Less than 1.5 hours'):
+        return 0.75
+    elif(time == '1.5 - 3 hours'):
+        return 2.25
+    elif(time == '3 - 4.5 hours'):
+        return 3.75
+    elif(time == '4.5 - 6 hours'):
+        return 5.25
+    elif(time == '6 + hours'):
+        return 6.75
+    else:
+        return time
 
 # Amount of hours spent studying for each exam [SYDE 211]
-def hours_of_studying_exams(hours):
+def clean_hours_of_studying_exams(hours):
     """ Use this to calculate average. Keep the original when doing the data stuff"""
     if(hours == '0 - 4'):
-        return '2'
+        return 2
     elif(hours == '5 - 9'):
-        return '7'
+        return 7
     elif(hours == '10 - 14'):
-        return '12'
+        return 12
     elif(hours == '15 - 19'):
-        return '17'
+        return 17
     elif(hours == '20 - 24'):
-        return '22'
+        return 22
     elif(hours == '24 +'):
-        return '27'
-    # else: # N/A or NaN
-    #     return # the mean
+        return 27
+    else:
+        return hours
 
-# def calculate_mean(values): # Data frame?
-#     # For loop and then size of dataframe column
-
-# Stress level during a timed exam
-
-# How did the quarantine effect your motivation to study? 
-
-# How did quarantine affect your work ethic?
+def clean_mark_walking_in(marks):
+    if(marks == '0 - 49'):
+        return 32
+    elif(marks == '50 - 59'):
+        return 55
+    elif(marks == '60 - 69'):
+        return 65
+    elif(marks == '70 - 79'):
+        return 75
+    elif(marks == '80 - 89'):
+        return 85
+    elif(marks == '90 - 100'):
+        return 95
+    else:
+        return marks
 
 # How many hours did you spend on the following assignments? [SYDE 223 PE 2]
-def hours_of_assignments(hours):
-    """ Use this to calculate average. Keep the original when doing the data stuff"""
+def clean_hours_of_assignments(hours):
+    """ Use this to calculate average. Keep the original when doing the data stuff
+        Incorrect answer options, missing 16 - 20. """
     if(hours == '0 - 4'):
         return '2'
-    elif(hours == '4 - 8'):
+    elif(hours == '4 - 8' or hours == '08-Apr'):
         return '6'
-    elif(hours == '8 - 12'):
+    elif(hours == '8 - 12' or hours == '12-Aug'):
         return '10'
-    elif(hours == '12 - 16'):
-        return '14'
-    elif(hours == '16 - 20'):
-        return '18'
+    elif(hours == '12 - 16' or hours =='16-Dec'):
+        return '15'
+    # elif(hours == '16 - 20'):
+    #     return '18'
     elif(hours == '20 - 24'):
-        return '22'
+        return '21'
     elif(hours = '24 +'):
         return '26'
-    # else: # N/A or NaN
-    #     return # the mean
+    else:
+        return hours
 
 
 
@@ -145,15 +195,58 @@ def hours_of_assignments(hours):
 
 
 ##################   M E N T A L   H E A L T H   ################
+
 # How has quarantine affected your mental health?
 """ This is the only question that has a scale of 5. Adjust scores accordingly 
     Multiply score taken in by 1.4 """
 def adjust_5_to_7(score):
     return score * 1.4
 
-
+# Calling Family
+def clean_calling_family(time):
+    if(time == '4 + times a day'):
+        return 5
+    elif(time == '2 - 3 times a day'):
+        return 3
+    elif(time == 'Every day'):
+        return 1
+    elif(time == '2 - 3 times a week'):
+        return 0.4
+    elif(time == 'Once a week '):
+        return 0.14
+    elif(time == 'Once every 2 weeks'):
+        return 0.07
+    elif(time == 'Once a month'):
+        return 0.03
+    elif(time == 'Never'):
+        return 0
+    else: 
+        return time
+    
+    
 
 ##################   J U S T   F O R   F U N   ################
 
-# How much money did you spend on Uber Eats/Equivalents?
+# Dating App Swipes
+# Video Games
+def clean_dating_video_games(time):
+    if(time == 'Several Hours a Day'):
+        return 3
+    elif(time == '1 Hour a Day'):
+        return 1
+    elif(time == 'A couple of minutes a day'):
+        return 0.5
+    elif(time == 'A couple of times a week'):
+        return 0.25
+    elif(time == 'Once a Week'):
+        return 0.14
+    elif(time == 'Once every 2 weeks'):
+        return 0.07
+    elif(time == 'Once a Month'):
+        return 0.03
+    elif(time == 'I did not use any dating apps' or time == 'I did not play any video games'):
+        return 0
+    else:
+        return time
+    
 
