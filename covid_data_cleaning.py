@@ -242,7 +242,7 @@ def clean_dating_video_games(time):
     else:
         return time
     
-////////////////////////////////////////////////////////////////////////////////////
+####################################################################################
 ##################   H E L P E R S   ################
 
 def replace_nulls_with_mean(df, column_name):
@@ -250,5 +250,56 @@ def replace_nulls_with_mean(df, column_name):
     df[column_name].fillna(mean, inplace = True)
     return df
 
-////////////////////////////////////////////////////////////////////////////////////
+def replace_nulls_with_zero(df, column_name):
+    df[column_name].fillna(0, inplace = True)
+    return df
+
+def replace_nulls_with_unanswered(df, column_name):
+    df[column_name].fillna('No Answer', inplace = True)
+
+####################################################################################
+
+df_analysis_std = pd.read_csv('../PRIVATE-Covid-SYDE/csv/analysis_std.csv')
+df_analysis_text = pd.read_csv('../PRIVATE-Covid-SYDE/csv/analysis_text.csv')
+
+# Check what to do for Hours Spent Studying For Electives
+columns_to_replace_with_mean = [
+    'Time to Finish SYDE 261 Exam',
+    'Time to Finish SYDE 285 Written Portion',
+    'SYDE 223 Exam Difficulty',
+    'SYDE 261 Exam Difficulty',
+    'Hours Spent Studying For SYDE 211',
+    'Hours Spent Studying For SYDE 223',
+    'Hours Spent Studying For SYDE 261',
+    'Hours Spent Studying For SYDE 283',
+    'Hours Spent Studying For SYDE 285',
+    'SYDE 211 Mark Before Exam ',
+    'SYDE 223 Mark Before Exam ',
+    'SYDE 261 Mark Before Exam ',
+    'SYDE 283 Mark Before Exam ',
+    'SYDE 285 Mark Before Exam ',
+    'Motivation to Study DQ',
+    'Work Ethic DQ',
+    'Hours Spent on SYDE 223 Practice Exercise 2',
+    'Hours Spent on SYDE 261 Project 2',
+    'Hours Spent on SYDE 261 Project 3',
+    'Hours Spent on SYDE 285 Term Project',
+    'Easiness of Learning Online',
+    'Apps Sent',
+    'Interviews Received',
+    'Amount of Times Broken Social Distancing',
+    'Rolls of Toilet Paper Bought',
+    'Days Spent in Pyjamas',
+    'Dalgona Coffees Made',
+]
+
+columns_to_replace_with_zero = [
+
+]
+
+columns_to_replace_with_unanswered = [
+    'Move-Out Date',
+    'Learning Style',
+    
+]
 
