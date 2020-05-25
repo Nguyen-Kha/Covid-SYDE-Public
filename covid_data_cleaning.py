@@ -259,8 +259,7 @@ def replace_nulls_with_unanswered(df, column_name):
 
 ####################################################################################
 
-df_analysis_std = pd.read_csv('../PRIVATE-Covid-SYDE/csv/analysis_std.csv')
-df_analysis_text = pd.read_csv('../PRIVATE-Covid-SYDE/csv/analysis_text.csv')
+
 
 # Check what to do for Hours Spent Studying For Electives
 columns_to_replace_with_mean = [
