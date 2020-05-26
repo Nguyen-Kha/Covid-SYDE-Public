@@ -170,19 +170,19 @@ def clean_hours_of_assignments(hours):
     """ Use this to calculate average. Keep the original when doing the data stuff
         Incorrect answer options, missing 16 - 20. """
     if(hours == '0 - 4'):
-        return '2'
+        return 2
     elif(hours == '4 - 8' or hours == '08-Apr'):
-        return '6'
+        return 6
     elif(hours == '8 - 12' or hours == '12-Aug'):
-        return '10'
+        return 10
     elif(hours == '12 - 16' or hours =='16-Dec'):
-        return '15'
+        return 15
     # elif(hours == '16 - 20'):
-    #     return '18'
+    #     return 18
     elif(hours == '20 - 24'):
-        return '21'
-    elif(hours = '24 +'):
-        return '26'
+        return 21
+    elif(hours == '24 +'):
+        return 26
     else:
         return hours
 
@@ -256,6 +256,7 @@ def replace_nulls_with_zero(df, column_name):
 
 def replace_nulls_with_unanswered(df, column_name):
     df[column_name].fillna('No Answer', inplace = True)
+    return df
 
 ####################################################################################
 ################ FUNCTIONS TO CALL FUNCTIONS #############
