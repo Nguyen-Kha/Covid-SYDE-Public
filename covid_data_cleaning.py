@@ -92,7 +92,7 @@ def clean_people_interaction(people):
         return 4
     elif(people == '6 - 10 people'):
         return 8
-    elif(people =- '11 - 20 people'):
+    elif(people == '11 - 20 people'):
         return 15
     elif(people == '20 + people'):
         return 25
@@ -258,47 +258,63 @@ def replace_nulls_with_unanswered(df, column_name):
     df[column_name].fillna('No Answer', inplace = True)
 
 ####################################################################################
+################ FUNCTIONS TO CALL FUNCTIONS #############
 
+def execute_all_numerical_cleaning(df):
 
-
-# Check what to do for Hours Spent Studying For Electives
-columns_to_replace_with_mean = [
-    'Time to Finish SYDE 261 Exam',
-    'Time to Finish SYDE 285 Written Portion',
-    'SYDE 223 Exam Difficulty',
-    'SYDE 261 Exam Difficulty',
-    'Hours Spent Studying For SYDE 211',
-    'Hours Spent Studying For SYDE 223',
-    'Hours Spent Studying For SYDE 261',
-    'Hours Spent Studying For SYDE 283',
-    'Hours Spent Studying For SYDE 285',
-    'SYDE 211 Mark Before Exam ',
-    'SYDE 223 Mark Before Exam ',
-    'SYDE 261 Mark Before Exam ',
-    'SYDE 283 Mark Before Exam ',
-    'SYDE 285 Mark Before Exam ',
-    'Motivation to Study DQ',
-    'Work Ethic DQ',
-    'Hours Spent on SYDE 223 Practice Exercise 2',
-    'Hours Spent on SYDE 261 Project 2',
-    'Hours Spent on SYDE 261 Project 3',
-    'Hours Spent on SYDE 285 Term Project',
-    'Easiness of Learning Online',
-    'Apps Sent',
-    'Interviews Received',
-    'Amount of Times Broken Social Distancing',
-    'Rolls of Toilet Paper Bought',
-    'Days Spent in Pyjamas',
-    'Dalgona Coffees Made',
-]
-
-columns_to_replace_with_zero = [
-
-]
-
-columns_to_replace_with_unanswered = [
-    'Move-Out Date',
-    'Learning Style',
+    ##############  Clean data before processing mean ############
     
-]
+    # Check what to do for Hours Spent Studying For Electives
+    columns_to_replace_with_mean = [
+        'Time to Finish SYDE 261 Exam',
+        'Time to Finish SYDE 285 Written Portion',
+        'SYDE 223 Exam Difficulty',
+        'SYDE 261 Exam Difficulty',
+        'Hours Spent Studying For SYDE 211',
+        'Hours Spent Studying For SYDE 223',
+        'Hours Spent Studying For SYDE 261',
+        'Hours Spent Studying For SYDE 283',
+        'Hours Spent Studying For SYDE 285',
+        'SYDE 211 Mark Before Exam ',
+        'SYDE 223 Mark Before Exam ',
+        'SYDE 261 Mark Before Exam ',
+        'SYDE 283 Mark Before Exam ',
+        'SYDE 285 Mark Before Exam ',
+        'Motivation to Study DQ',
+        'Work Ethic DQ',
+        'Hours Spent on SYDE 223 Practice Exercise 2',
+        'Hours Spent on SYDE 261 Project 2',
+        'Hours Spent on SYDE 261 Project 3',
+        'Hours Spent on SYDE 285 Term Project',
+        'Easiness of Learning Online',
+        'Apps Sent',
+        'Interviews Received',
+        'Amount of Times Broken Social Distancing',
+        'Rolls of Toilet Paper Bought',
+        'Days Spent in Pyjamas',
+        'Dalgona Coffees Made',
+    ]
 
+    columns_to_replace_with_zero = [
+
+    ]
+
+    columns_to_replace_with_unanswered = [
+        'Move-Out Date',
+        'Learning Style',
+    ]
+    for i in range(0, len(columns_to_replace_with_mean)):
+        df = replace_nulls_with_mean(df, columns_to_replace_with_mean[i])
+    
+    for i in range(0, len(columns_to_replace_with_unanswered)):
+        df = replace_nulls_with_unanswered(df, columns_to_replace_with_unanswered[i])
+
+    # for i in range(0, len(columns_to_replace_with_zero)):
+    #     df = replace_nulls_with_zero(df, columns_to_replace_with_zero[i])
+
+    return df
+
+####################################################################################
+
+df_num_std = pd.read_csv('')
+df_num_text = pd.read_csv('')
