@@ -27,3 +27,18 @@ def clean_range_of_one(date):
         return '9 - 10'
     else:
         return date
+
+def clean_range_of_two(date):
+    elif(date == '04-Feb'):
+        return '2 - 4'
+    elif(date == '06-Apr'):
+        return '4 - 6'
+    elif(date == '08-Jun'):
+        return '6 - 8'
+    elif(date == '10-Aug'):
+        return '8 - 10'
+    else:
+        return date
+
+
+
