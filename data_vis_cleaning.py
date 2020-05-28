@@ -7,7 +7,7 @@ covid_data_cleaning.py
 import pandas as pd
 
 def clean_range_of_one(date):
-    elif(date == '02-Jan'):
+    if(date == '02-Jan'):
         return '1 - 2'
     elif(date == '03-Feb'):
         return '2 - 3'
@@ -29,7 +29,7 @@ def clean_range_of_one(date):
         return date
 
 def clean_range_of_two(date):
-    elif(date == '04-Feb'):
+    if(date == '04-Feb'):
         return '2 - 4'
     elif(date == '06-Apr'):
         return '4 - 6'
@@ -40,5 +40,12 @@ def clean_range_of_two(date):
     else:
         return date
 
+def clean_range_of_four(date):
+    if(date == '09-May')
+        return '5 - 9'
+    elif (date == '14-Oct'):
+        return '10 - 14'
 
+# Reformat answers from column AH
 
+# Multiple options column BS
