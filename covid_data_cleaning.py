@@ -260,8 +260,74 @@ def replace_nulls_with_unanswered(df, column_name):
 
 ####################################################################################
 ################ FUNCTIONS TO CALL FUNCTIONS #############
+ 
+def number_of_courses_apply(df):
+    df[['Courses Taken']] = df[['Courses Taken']].apply(clean_amount_courses)
+
+def range_one_applymap(df):
+    df[[
+        'Hours of Sleep per Night BQ',
+        'Hours Spent Eating/Cooking per Day BQ',
+        'Hours Spent Interneting per Day BQ',
+        'Hours of Sleep per Night DQ',
+        'Hours Spent Eating/Cooking per Day DQ',
+        'Hours Spent Interneting per Day DQ'
+    ]] = df[[
+        'Hours of Sleep per Night BQ',
+        'Hours Spent Eating/Cooking per Day BQ',
+        'Hours Spent Interneting per Day BQ',
+        'Hours of Sleep per Night DQ',
+        'Hours Spent Eating/Cooking per Day DQ',
+        'Hours Spent Interneting per Day DQ'
+    ]].applymap(clean_range_of_one)
+    return df
+
+def increase_one_applymap(df):
+    df[[
+        'Side Projects BQ',
+        'Side Projects DQ',
+        'Courses CR/NCR-ed'
+    ]] = df[[
+        'Side Projects BQ',
+        'Side Projects DQ',
+        'Courses CR/NCR-ed'
+    ]].applymap(clean_increase_value_by_one)
+    return df
+
+def range_two_applymap(df):
+    df[[
+        'Hours Spent Outside Home per Day BQ',
+        'Hours Spent Socializing per Day BQ',
+        'Hours Spent Outside Home per Day DQ',
+        'Hours Spent Socializing per Day DQ'
+    ]] = df[[
+        'Hours Spent Outside Home per Day BQ',
+        'Hours Spent Socializing per Day BQ',
+        'Hours Spent Outside Home per Day DQ',
+        'Hours Spent Socializing per Day DQ'
+    ]].applymap(clean_range_of_two)
+    return df
+
+def interaction_applymap(df):
+    df[[
+        'Amount of People Interacted With per Day BQ',
+        'Amount of People Interacted With per Day DQ'
+    ]] = df[[
+        'Amount of People Interacted With per Day BQ',
+        'Amount of People Interacted With per Day DQ'
+    ]].applymap(clean_people_interaction)
+    return df
+
+def _261_apply(df):
+    df[['Time to Finish SYDE 261 Exam']] = df[['Time to Finish SYDE 261 Exam']].apply(clean_261_exam_time)
+    return df
+
+def _285_apply(df):
+    df[['Time to Finish SYDE 285 Written Portion']] = df[['Time to Finish SYDE 285 Written Portion']].apply(clean_285_exam_time)
+    return df
 
 def execute_all_numerical_cleaning(df):
+    
 
     ##############  Clean data before processing mean ############
     
