@@ -326,8 +326,83 @@ def _285_apply(df):
     df[['Time to Finish SYDE 285 Written Portion']] = df[['Time to Finish SYDE 285 Written Portion']].apply(clean_285_exam_time)
     return df
 
+def hours_studying_applymap(df):
+    df[[
+        'Hours Spent Studying For SYDE 211',
+        'Hours Spent Studying For SYDE 223',
+        'Hours Spent Studying For SYDE 261',
+        'Hours Spent Studying For SYDE 283',
+        'Hours Spent Studying For SYDE 285'
+    ]] = df[[
+        'Hours Spent Studying For SYDE 211',
+        'Hours Spent Studying For SYDE 223',
+        'Hours Spent Studying For SYDE 261',
+        'Hours Spent Studying For SYDE 283',
+        'Hours Spent Studying For SYDE 285'
+    ]].applymap(clean_hours_of_studying_exams)
+    return df
+
+def marks_applymap(df):
+    df[[
+        'SYDE 211 Mark Before Exam',
+        'SYDE 223 Mark Before Exam',
+        'SYDE 261 Mark Before Exam',
+        'SYDE 283 Mark Before Exam',
+        'SYDE 285 Mark Before Exam'
+    ]] = df[[
+        'SYDE 211 Mark Before Exam',
+        'SYDE 223 Mark Before Exam',
+        'SYDE 261 Mark Before Exam',
+        'SYDE 283 Mark Before Exam',
+        'SYDE 285 Mark Before Exam'
+    ]].applymap(clean_mark_walking_in)
+    return df
+
+def hours_assignments_applymap(df):
+    df[[
+        'Hours Spent on SYDE 223 Practice Exercise 2',
+        'Hours Spent on SYDE 261 Project 2',
+        'Hours Spent on SYDE 261 Project 3',
+        'Hours Spent on SYDE 285 Term Project'
+    ]] = df[[
+        'Hours Spent on SYDE 223 Practice Exercise 2',
+        'Hours Spent on SYDE 261 Project 2',
+        'Hours Spent on SYDE 261 Project 3',
+        'Hours Spent on SYDE 285 Term Project'
+    ]].applymap(clean_hours_of_assignments)
+    return df
+
+def adjust_7_apply(df):
+    df[['Effects on Mental Health']] = df[['Effects on Mental Health']].apply(adjust_5_to_7)
+    return df
+
+def calling_family_apply(df):
+    df[['Amount of Times Called Friends/Family']] = df[['Amount of Times Called Friends/Family']].apply(clean_calling_family)
+    return df
+
+def dating_video_games_applymap(df):
+    df[[
+        'Time Spent Swiping on Dating Apps',
+        'Amount of Time Playing Video Games'
+    ]] = df[[
+        'Time Spent Swiping on Dating Apps',
+        'Amount of Time Playing Video Games'
+    ]].applymap(clean_dating_video_games)
+    return df
+
 def execute_all_numerical_cleaning(df):
-    
+    df = range_one_applymap(df)
+    df = increase_one_applymap(df)
+    df = range_two_applymap(df)
+    df = interaction_applymap(df)
+    df = _261_apply(df)
+    df = _285_apply(df)
+    df = hours_studying_applymap(df)
+    df = marks_applymap(df)
+    df = hours_assignments_applymap(df)
+    df = adjust_7_apply(df)
+    df = calling_family_apply(df)
+    df = dating_video_games_applymap(df)
 
     ##############  Clean data before processing mean ############
     
