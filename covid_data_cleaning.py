@@ -136,9 +136,9 @@ def clean_hours_of_studying_exams(hours):
     """ Use this to calculate average. Keep the original when doing the data stuff"""
     if(hours == '0 - 4'):
         return 2
-    elif(hours == '5 - 9'):
+    elif(hours == '5 - 9' or hours == '09-May'):
         return 7
-    elif(hours == '10 - 14'):
+    elif(hours == '10 - 14' or hours == '14-Oct'):
         return 12
     elif(hours == '15 - 19'):
         return 17
@@ -229,7 +229,7 @@ def clean_dating_video_games(time):
         return 1
     elif(time == 'A couple of minutes a day'):
         return 0.5
-    elif(time == 'A couple of times a week'):
+    elif(time == 'A couple times a week'):
         return 0.25
     elif(time == 'Once a Week'):
         return 0.14
@@ -237,7 +237,7 @@ def clean_dating_video_games(time):
         return 0.07
     elif(time == 'Once a Month'):
         return 0.03
-    elif(time == 'I did not use any dating apps' or time == 'I did not play any video games'):
+    elif(time == 'I did not use any dating apps' or time == 'I did not play any video games' or time == 'I did play any video games'):
         return 0
     else:
         return time
@@ -417,11 +417,11 @@ def execute_all_numerical_cleaning(df):
         'Hours Spent Studying For SYDE 261',
         'Hours Spent Studying For SYDE 283',
         'Hours Spent Studying For SYDE 285',
-        'SYDE 211 Mark Before Exam ',
-        'SYDE 223 Mark Before Exam ',
-        'SYDE 261 Mark Before Exam ',
-        'SYDE 283 Mark Before Exam ',
-        'SYDE 285 Mark Before Exam ',
+        'SYDE 211 Mark Before Exam',
+        'SYDE 223 Mark Before Exam',
+        'SYDE 261 Mark Before Exam',
+        'SYDE 283 Mark Before Exam',
+        'SYDE 285 Mark Before Exam',
         'Motivation to Study DQ',
         'Work Ethic DQ',
         'Hours Spent on SYDE 223 Practice Exercise 2',
@@ -460,6 +460,7 @@ df_num_text = pd.read_csv('')
 df_num_std = execute_all_numerical_cleaning(df_num_std)
 df_num_text = execute_all_numerical_cleaning(df_num_text)
 
-path = ''
+path = r'...\csv\\'
+
 df_num_std.to_csv(path + 'analysis_std.csv')
 df_num_text.to_csv(path + 'analysis_text.csv')
