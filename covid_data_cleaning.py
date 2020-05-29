@@ -53,12 +53,7 @@ def clean_increase_value_by_one(value):
     elif(value == '6 +'):
         return 6
     else:
-        return value
-
-# Study Habits [before quarantine] 
-""" Potentially Reverse """
-def reverse_scale(number, scale_number=7):
-    return scale_number - number + 1    
+        return value 
 
 # About how many hours a day did you spend outside your home [before quarantine] ?
 # About how many hours a day did you spend socializing [before quarantine] ?
@@ -332,13 +327,15 @@ def hours_studying_applymap(df):
         'Hours Spent Studying For SYDE 223',
         'Hours Spent Studying For SYDE 261',
         'Hours Spent Studying For SYDE 283',
-        'Hours Spent Studying For SYDE 285'
+        'Hours Spent Studying For SYDE 285',
+        'Hours Spent Studying For Electives'
     ]] = df[[
         'Hours Spent Studying For SYDE 211',
         'Hours Spent Studying For SYDE 223',
         'Hours Spent Studying For SYDE 261',
         'Hours Spent Studying For SYDE 283',
-        'Hours Spent Studying For SYDE 285'
+        'Hours Spent Studying For SYDE 285',
+        'Hours Spent Studying For Electives'
     ]].applymap(clean_hours_of_studying_exams)
     return df
 
@@ -460,7 +457,7 @@ df_num_text = pd.read_csv('')
 df_num_std = execute_all_numerical_cleaning(df_num_std)
 df_num_text = execute_all_numerical_cleaning(df_num_text)
 
-path = r'...\csv\\'
+path = r'\csv\\'
 
 df_num_std.to_csv(path + 'analysis_std.csv')
 df_num_text.to_csv(path + 'analysis_text.csv')

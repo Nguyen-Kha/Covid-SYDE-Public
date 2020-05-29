@@ -41,7 +41,7 @@ def clean_range_of_two(date):
         return date
 
 def clean_range_of_four(date):
-    if(date == '09-May')
+    if(date == '09-May'):
         return '5 - 9'
     elif (date == '14-Oct'):
         return '10 - 14'

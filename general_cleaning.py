@@ -186,62 +186,49 @@ def capitalize_string_applymap(df):
     ]].applymap(capitalize_string)
     return df
 
+def fix_video_game_time(text):
+    if(text == 'I did play any video games'):
+        return 'I did not play any video games'
+    else:
+        return text
+
+# Study Habits [before quarantine] 
+""" Potentially Reverse """
+def reverse_scale(number):
+    scale_number = 7
+    return (scale_number - number + 1)
+
 df_data_vis_std = pd.read_csv('')
-df_data_vis_original = pd.read_csv('')
-df_num_std = pd.read_csv('')
-df_num_original = pd.read_csv('')
+df_data_vis_text = pd.read_csv('')
+# df_num_std = pd.read_csv('')
+# df_num_text = pd.read_csv('')
+
+# df_data_vis_std['Amount of Time Playing Video Games'] = df_data_vis_std['Amount of Time Playing Video Games'].apply(fix_video_game_time)
+# df_data_vis_text['Amount of Time Playing Video Games'] = df_data_vis_text['Amount of Time Playing Video Games'].apply(fix_video_game_time)
+
+df_data_vis_std['Timed Exam Stress Level'] = df_data_vis_std['Timed Exam Stress Level'].apply(reverse_scale)
+df_data_vis_text['Timed Exam Stress Level'] = df_data_vis_text['Timed Exam Stress Level'].apply(reverse_scale)
+# df_num_std['Timed Exam Stress Level'] = df_num_std['Timed Exam Stress Level'].apply(reverse_scale)
+# df_num_text['Timed Exam Stress Level'] = df_num_text['Timed Exam Stress Level'].apply(reverse_scale)
+
+# df_data_vis_std = exam_difficulty_applymap(df_data_vis_std)
+# df_data_vis_original = exam_difficulty_applymap(df_data_vis_original)
+# df_num_std = exam_difficulty_applymap(df_num_std)
+# df_num_original = exam_difficulty_applymap(df_num_original)
+
+# df_data_vis_std = rename_column_headers(df_data_vis_std)
+# df_data_vis_original = rename_column_headers(df_data_vis_original)
+# df_num_std = rename_column_headers(df_num_std)
+# df_num_original = rename_column_headers(df_num_original)
+
+# df_data_vis_std = capitalize_string_applymap(df_data_vis_std)
+# df_data_vis_original = capitalize_string_applymap(df_data_vis_original)
+# df_num_std = capitalize_string_applymap(df_num_std)
+# df_num_original = capitalize_string_applymap(df_num_original)
 
 
-
-# exam_difficulty_columns = [
-#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 211]',
-#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 223]',
-#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 261]',
-#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 283]',
-#     'In terms of relative difficulty, rank the exams from hardest to easiest [SYDE 285]'
-# ]
-
-# for columns in range (0, len(exam_difficulty_columns)):
-#     df_data_vis_std = df_data_vis_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-#     df_data_vis_original = df_data_vis_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-#     df_num_std = df_num_std[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-#     df_num_original = df_num_original[exam_difficulty_columns[columns]].apply(clean_exam_difficulty)
-
-df_data_vis_std = exam_difficulty_applymap(df_data_vis_std)
-df_data_vis_original = exam_difficulty_applymap(df_data_vis_original)
-df_num_std = exam_difficulty_applymap(df_num_std)
-df_num_original = exam_difficulty_applymap(df_num_original)
-
-df_data_vis_std = rename_column_headers(df_data_vis_std)
-df_data_vis_original = rename_column_headers(df_data_vis_original)
-df_num_std = rename_column_headers(df_num_std)
-df_num_original = rename_column_headers(df_num_original)
-
-# titles_to_capitalize = [
-#     'City of Cancelled Job',
-#     'Country of Cancelled Job',
-#     'City of Job',
-#     'County of Job',
-#     'Video Games Played',
-#     'Favourite Entertainment Series'
-# ]
-
-# for titles in range (0, len(titles_to_capitalize)):
-#     df_data_vis_std[titles_to_capitalize[titles]].apply(capitalize_string)
-#     df_data_vis_original[titles_to_capitalize[titles]].apply(capitalize_string)
-#     df_num_std[titles_to_capitalize[titles]].apply(capitalize_string)
-#     df_num_original[titles_to_capitalize[titles]].apply(capitalize_string)
-
-df_data_vis_std.head()
-
-df_data_vis_std = capitalize_string_applymap(df_data_vis_std)
-df_data_vis_original = capitalize_string_applymap(df_data_vis_original)
-df_num_std = capitalize_string_applymap(df_num_std)
-df_num_original = capitalize_string_applymap(df_num_original)
-
-
-path = r'...\csv\\'
+path = r'\csv\\'
 df_data_vis_std.to_csv(path + 'data_vis_std.csv')
-df_data_vis_original.to_csv(path + 'data_vis_text.csv')
-df_num_std.to_csv(path + 'analysis_std.csv')
-df_num_original.to_csv(path + 'analysis_text.csv')
+df_data_vis_text.to_csv(path + 'data_vis_text.csv')
+# df_num_std.to_csv(path + 'analysis_std.csv')
+# df_num_text.to_csv(path + 'analysis_text.csv')
