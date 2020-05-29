@@ -262,7 +262,7 @@ def replace_nulls_with_unanswered(df, column_name):
 ################ FUNCTIONS TO CALL FUNCTIONS #############
  
 def number_of_courses_apply(df):
-    df[['Courses Taken']] = df[['Courses Taken']].apply(clean_amount_courses)
+    df['Courses Taken'] = df['Courses Taken'].apply(clean_amount_courses)
 
 def range_one_applymap(df):
     df[[
@@ -319,11 +319,11 @@ def interaction_applymap(df):
     return df
 
 def _261_apply(df):
-    df[['Time to Finish SYDE 261 Exam']] = df[['Time to Finish SYDE 261 Exam']].apply(clean_261_exam_time)
+    df['Time to Finish SYDE 261 Exam'] = df['Time to Finish SYDE 261 Exam'].apply(clean_261_exam_time)
     return df
 
 def _285_apply(df):
-    df[['Time to Finish SYDE 285 Written Portion']] = df[['Time to Finish SYDE 285 Written Portion']].apply(clean_285_exam_time)
+    df['Time to Finish SYDE 285 Written Portion'] = df['Time to Finish SYDE 285 Written Portion'].apply(clean_285_exam_time)
     return df
 
 def hours_studying_applymap(df):
@@ -373,11 +373,11 @@ def hours_assignments_applymap(df):
     return df
 
 def adjust_7_apply(df):
-    df[['Effects on Mental Health']] = df[['Effects on Mental Health']].apply(adjust_5_to_7)
+    df['Effects on Mental Health'] = df['Effects on Mental Health'].apply(adjust_5_to_7)
     return df
 
 def calling_family_apply(df):
-    df[['Amount of Times Called Friends/Family']] = df[['Amount of Times Called Friends/Family']].apply(clean_calling_family)
+    df['Amount of Times Called Friends/Family'] = df['Amount of Times Called Friends/Family'].apply(clean_calling_family)
     return df
 
 def dating_video_games_applymap(df):
@@ -437,10 +437,6 @@ def execute_all_numerical_cleaning(df):
         'Dalgona Coffees Made',
     ]
 
-    columns_to_replace_with_zero = [
-
-    ]
-
     columns_to_replace_with_unanswered = [
         'Move-Out Date',
         'Learning Style',
@@ -460,3 +456,10 @@ def execute_all_numerical_cleaning(df):
 
 df_num_std = pd.read_csv('')
 df_num_text = pd.read_csv('')
+
+df_num_std = execute_all_numerical_cleaning(df_num_std)
+df_num_text = execute_all_numerical_cleaning(df_num_text)
+
+path = ''
+df_num_std.to_csv(path + 'analysis_std.csv')
+df_num_text.to_csv(path + 'analysis_text.csv')
