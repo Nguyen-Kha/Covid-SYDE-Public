@@ -8,14 +8,20 @@ from collections import Counter
 ########   GRAPH FUNCTIONS   ########################
 
 # PIE CHART
-def create_pie(
+def create_pie( 
     df,
     column_name,
-    title
-):
+    title,
+    splice_required = False
+): # TODO: TEST
     count = Counter()
+    if(splice_required):
+        column_values = splice_cells_with_commas(df, column_name)
+    else:
+        column_values = df[column_name]
+
     # Change: Append cells to an array. arrays with arrays in them, splice it
-    for value in df[column_name]:
+    for value in column_values:
         count[value] += 1
     
     df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
