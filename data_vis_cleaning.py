@@ -28,6 +28,24 @@ def clean_range_of_one(date):
     else:
         return date
 
+def clean_range_of_one_applymap(df):
+    df[[
+        'Hours of Sleep per Night DQ',
+        'Hours Spent Eating/Cooking per Day BQ',
+        'Hours Spent Interneting per Day BQ',
+        'Hours of Sleep per Night DQ',
+        'Hours Spent Eating/Cooking per Day DQ',
+        'Hours Spent Interneting per Day DQ'
+    ]] = df[[
+        'Hours of Sleep per Night DQ',
+        'Hours Spent Eating/Cooking per Day BQ',
+        'Hours Spent Interneting per Day BQ',
+        'Hours of Sleep per Night DQ',
+        'Hours Spent Eating/Cooking per Day DQ',
+        'Hours Spent Interneting per Day DQ'
+    ]].applymap(clean_range_of_one)
+    return df
+
 def clean_range_of_two(date):
     if(date == '04-Feb'):
         return '2 - 4'
@@ -41,7 +59,7 @@ def clean_range_of_two(date):
         return date
 
 def clean_range_of_four(date):
-    if(date == '09-May')
+    if(date == '09-May'):
         return '5 - 9'
     elif (date == '14-Oct'):
         return '10 - 14'
