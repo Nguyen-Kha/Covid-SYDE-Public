@@ -14,6 +14,7 @@ def create_pie(
     title
 ):
     count = Counter()
+    # Change: Append cells to an array. arrays with arrays in them, splice it
     for value in df[column_name]:
         count[value] += 1
     
@@ -34,10 +35,26 @@ def create_pie(
     plt.axis('equal')
 
     fig.savefig('.../test.png')
+    plt.close()
 
+#####################################################
+########   HELPER FUNCTIONS   #######################
+
+def splice_cells_with_commas(df, column_name): # TODO: TEST
+    """
+    RETURNS: ARRAY of values to be counted with COUNTER
+    """
+    spliced_array = []
+    for item in df[column_name]:
+        if(type(item) != float):
+            potential_list = item.split(', ')
+            for single in potential_list:
+                spliced_array.append(single)
+    
+    return spliced_array
 
 #####################################################
 ########   GENERATE GRAPHS   ########################
 
 df = pd.read_csv('')
-create_pie(df, 'Learning Style', 'Learning Style')
+# create_pie(df, 'Learning Style', 'Learning Style')
