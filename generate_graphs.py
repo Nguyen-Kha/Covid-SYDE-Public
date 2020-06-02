@@ -7,6 +7,59 @@ from collections import Counter
 #####################################################
 ########   GRAPH FUNCTIONS   ########################
 
+# BAR CHART
+def create_bar(
+    df,
+    column_name,
+    x_axis_label,
+    y_axis_label,
+    title,
+    vertical: bool,
+    splice_required = False,
+    bar_values: list = [],
+): # TODO: INCOMPLETE
+    """
+    vertical: True for vertical bar graph, False for horizontal graph
+    """
+
+    count = Counter()
+    if(splice_required):
+        column_values = splice_cells_with_commas(df, column_name)
+    else:
+        column_values = df[column_name]
+
+    for value in column_values:
+        count[value] += 1
+    
+    df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
+    if bar_values:
+        df_temp.reindex(bar_values)
+
+    plt.figure(figsize = (11,9))
+
+    if(vertical):
+        plt.bar(
+            x = df_temp['title'],
+            height = df_temp['values'],
+            align = 'center',
+        )
+        plt.xlabel(x_axis_label)
+        plt.ylabel(y_axis_label)
+        # plt.xticks()
+    else:
+        plt.barh(
+            y = df_temp['title'],
+            width = df_temp['values'],
+            align = 'center',
+        )
+        plt.xlabel(x_axis_label)
+        plt.ylabel(y_axis_label)
+        # plt.yticks()
+    
+    plt.title(title)
+    plt.savefig('.../test.png')
+    plt.close()
+
 # PIE CHART
 def create_pie( 
     df,
@@ -20,7 +73,6 @@ def create_pie(
     else:
         column_values = df[column_name]
 
-    # Change: Append cells to an array. arrays with arrays in them, splice it
     for value in column_values:
         count[value] += 1
     
