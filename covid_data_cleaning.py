@@ -92,7 +92,7 @@ def clean_people_interaction(people):
     elif(people == '20 + people'):
         return 25
     else:
-        return None
+        return people
     
 
 ##################   E X A M S   A N D   A C A D E M I C S   ################
