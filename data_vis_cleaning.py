@@ -64,6 +64,19 @@ def clean_range_of_four(date):
     elif (date == '14-Oct'):
         return '10 - 14'
 
+def convert_string_to_list(string):
+    string = string.split(',')
+    return string
+
+# there is an error in the next function
+def convert_string_to_list_applymap(df):
+    df[[
+        'Reasons for Staying in Waterloo'
+    ]] = df[[
+        'Reasons for Staying in Waterloo'
+    ]].applymap(convert_string_to_list)
+    return df
+
 # Reformat answers from column AH
 
 # Multiple options column BS
