@@ -17,7 +17,7 @@ def create_bar(
     vertical: bool,
     splice_required = False,
     bar_values: list = [],
-): # TODO: INCOMPLETE
+): # TODO: INCOMPLETE - Steps, Ticks, Styles
     """
     vertical: True for vertical bar graph, False for horizontal graph
     """
@@ -93,6 +93,33 @@ def create_pie(
     plt.axis('equal')
 
     fig.savefig('.../test.png')
+    plt.close()
+
+# SCATTER PLOT
+def create_scatter(
+    df,
+    x_column_name,
+    y_column_name,
+    x_axis_label,
+    y_axis_label,
+    title,
+    x_axis_values: list = []
+): # TODO: Figure out a way to account for sizes of dots, add styles, adjust scales
+    df_temp = pd.DataFrame({x_column_name: df[x_column_name], y_column_name: df[y_column_name]})
+    if(x_axis_values):
+        df_temp = df_temp.sort_values(by=[x_axis_values])
+    else:
+        df_temp = df_temp.sort_values(by=[x_column_name], ascending=True)
+    
+    plt.figure(figsize = (11,9))
+    plt.scatter(
+        x = df_temp[x_column_name],
+        y = df_temp[y_column_name],
+    )
+    plt.title(label = title)
+    plt.xlabel(x_axis_label)
+    plt.ylabel(y_axis_label)
+    plt.savefig('../test.png')
     plt.close()
 
 #####################################################
