@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-# import seaborn as sns
+import seaborn as sns
 # import numpy as np
 from collections import Counter
 
@@ -91,7 +91,29 @@ def create_density(
     )
 
     plt.savefig('../test.png')
-    plt.close()    
+    plt.close()   
+
+# LINE CHART
+def create_line(
+    df,
+    x_column_name,
+    y_column_name,
+    x_axis_label,
+    y_axis_label,
+    title
+): #TODO: TEST
+    df_temp = pd.DataFrame({x_column_name: df[x_column_name], y_column_name: df[y_column_name]})
+
+    plt.figure(figsize = (11,9))
+    sns.lineplot(
+        x = x_column_name,
+        y = y_column_name,
+        data = df_temp
+    )
+    plt.title(label = title)
+    plt.savefig('../test.png')
+    plt.close
+
 
 # PIE CHART
 def create_pie( 
@@ -128,16 +150,17 @@ def create_pie(
     fig.savefig('.../test.png')
     plt.close()
 
-# POINT PLOT
-def create_point(
-    df,
-    x_column_names: List = [],
-    x_axis_label,
-    y_axis_label,
-    hue_column_name,
-):
-    """
-    """
+# # POINT PLOT
+# def create_point(
+#     df,
+#     x_column_names: List = [],
+#     x_axis_label,
+#     y_axis_label,
+#     hue_column_name,
+# ):
+#     """
+#     """
+
 
 
 # SCATTER PLOT
