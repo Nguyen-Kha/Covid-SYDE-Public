@@ -60,6 +60,39 @@ def create_bar(
     plt.savefig('.../test.png')
     plt.close()
 
+# DENSITY CHART - SHADED
+def create_density(
+    df,
+    x_column_name,
+    # y_column_name,
+    x_axis_label,
+    # y_axis_label,
+    title,
+    bar_values: list = [],
+): # TODO: convert to column names list to overlay, style
+    """
+    """
+    count = Counter()
+    for value in df[x_column_name]:
+        count[value] += 1
+    
+    df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
+    if bar_values:
+        df_temp.reindex(bar_values)
+
+    plt.figure(figsize = (11,9))
+    plt.title(label = title)
+    sns.kdeplot(
+        data = df_temp['title'],
+        shade = True,
+        color = "b",
+        gridsize = 100,
+        label = x_column_name
+    )
+
+    plt.savefig('../test.png')
+    plt.close()    
+
 # PIE CHART
 def create_pie( 
     df,
@@ -94,6 +127,18 @@ def create_pie(
 
     fig.savefig('.../test.png')
     plt.close()
+
+# POINT PLOT
+def create_point(
+    df,
+    x_column_names: List = [],
+    x_axis_label,
+    y_axis_label,
+    hue_column_name,
+):
+    """
+    """
+
 
 # SCATTER PLOT
 def create_scatter(
