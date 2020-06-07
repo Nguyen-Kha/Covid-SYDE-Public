@@ -206,6 +206,10 @@ def splice_cells_with_commas(df, column_name): # TODO: TEST
     
     return spliced_array
 
+def save_plot(fig):
+    fig.savefig('../test')
+    plt.close()
+
 #####################################################
 ########   GENERATE GRAPHS   ########################
 
