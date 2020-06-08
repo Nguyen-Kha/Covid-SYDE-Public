@@ -206,8 +206,8 @@ df_data_vis_text = pd.read_csv('')
 # df_data_vis_std['Amount of Time Playing Video Games'] = df_data_vis_std['Amount of Time Playing Video Games'].apply(fix_video_game_time)
 # df_data_vis_text['Amount of Time Playing Video Games'] = df_data_vis_text['Amount of Time Playing Video Games'].apply(fix_video_game_time)
 
-df_data_vis_std['Timed Exam Stress Level'] = df_data_vis_std['Timed Exam Stress Level'].apply(reverse_scale)
-df_data_vis_text['Timed Exam Stress Level'] = df_data_vis_text['Timed Exam Stress Level'].apply(reverse_scale)
+# df_data_vis_std['Timed Exam Stress Level'] = df_data_vis_std['Timed Exam Stress Level'].apply(reverse_scale)
+# df_data_vis_text['Timed Exam Stress Level'] = df_data_vis_text['Timed Exam Stress Level'].apply(reverse_scale)
 # df_num_std['Timed Exam Stress Level'] = df_num_std['Timed Exam Stress Level'].apply(reverse_scale)
 # df_num_text['Timed Exam Stress Level'] = df_num_text['Timed Exam Stress Level'].apply(reverse_scale)
 
@@ -226,6 +226,28 @@ df_data_vis_text['Timed Exam Stress Level'] = df_data_vis_text['Timed Exam Stres
 # df_num_std = capitalize_string_applymap(df_num_std)
 # df_num_original = capitalize_string_applymap(df_num_original)
 
+###########   COLUMNS TO ADD ############
+def add_columns(df):
+    df['Delta Average Sleep'] = df['Hours of Sleep per Night DQ'] - df['Hours of Sleep per Night BQ']
+    df['Delta Eating Cooking'] = df['Hours Spent Eating/Cooking per Day DQ'] - df['Hours Spent Eating/Cooking per Day BQ']
+    df['Delta Time Outside'] = df['Hours Spent Outside Home per Day DQ'] - df['Hours Spent Outside Home per Day BQ']
+    df['Delta Socializing'] = df['Hours Spent Socializing per Day DQ'] - df['Hours Spent Socializing per Day BQ']
+    df['Delta Exercise'] = df['Days of Exercise per Week DQ'] - df['Days of Exercise per Week BQ']
+    df['Delta Internet'] = df['Hours Spent Interneting per Day DQ'] - df['Hours Spent Interneting per Day BQ']
+
+    df['Total Time Studying'] = (df['Hours Spent Studying For SYDE 211'] + df['Hours Spent Studying For SYDE 223']
+        + df['Hours Spent Studying For SYDE 261'] + df['Hours Spent Studying For SYDE 283']
+        + df['Hours Spent Studying For SYDE 285'] + df['Hours Spent Studying For Electives'])
+    df['Term Average Walking In'] = (df['SYDE 211 Mark Before Exam'] + df['SYDE 223 Mark Before Exam']
+        + df['SYDE 261 Mark Before Exam'] + df['SYDE 283 Mark Before Exam'] + df['SYDE 285 Mark Before Exam'])
+    df['Time Spent On Projects'] = (df['Hours Spent on SYDE 223 Practice Exercise 2'] + df['Hours Spent on SYDE 261 Project 2']
+        + df['Hours Spent on SYDE 261 Project 3'] + df['Hours Spent on SYDE 285 Term Project'])
+    df['Apps Sent per Interview'] = df['Apps Sent'] / df['Interviews Received']
+
+    return df
+
+df_data_vis_std = add_columns(df_data_vis_std)
+df_data_vis_text = add_columns(df_data_vis_text)
 
 path = r'\csv\\'
 df_data_vis_std.to_csv(path + 'data_vis_std.csv')
