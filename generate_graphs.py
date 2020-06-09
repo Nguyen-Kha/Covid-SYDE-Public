@@ -23,38 +23,44 @@ def create_bar(
     """
 
     count = Counter()
-    if(splice_required):
-        column_values = splice_cells_with_commas(df, column_name)
-    else:
-        column_values = df[column_name]
+#     if(splice_required):
+#         column_values = splice_cells_with_commas(df, column_name)
+#     else:
+#         column_values = df[column_name]
 
-    for value in column_values:
+#     for value in column_values:
+    for value in df[column_name]:
         count[value] += 1
     
     df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
-    if bar_values:
-        df_temp.reindex(bar_values)
+    if x_bar_values:
+        df_temp.reindex(x_bar_values)
 
-    plt.figure(figsize = (11,9))
-
+    fig, ax = plt.subplots(figsize = (11,9))
+    
     if(vertical):
-        plt.bar(
+        ax.bar(
             x = df_temp['title'],
             height = df_temp['values'],
             align = 'center',
+            zorder = 3
         )
-        plt.xlabel(x_axis_label)
-        plt.ylabel(y_axis_label)
+        ax.set_xlabel(x_axis_label)
+        ax.set_ylabel(y_axis_label)
         # plt.xticks()
     else:
-        plt.barh(
+        ax.barh(
             y = df_temp['title'],
             width = df_temp['values'],
             align = 'center',
+            zorder = 3
         )
-        plt.xlabel(x_axis_label)
-        plt.ylabel(y_axis_label)
+        ax.set_xlabel(x_axis_label)
+        ax.set_ylabel(y_axis_label)
         # plt.yticks()
+
+    plt.rcParams['axes.facecolor'] = '#E6E6E6'
+    ax.grid(color='w', linestyle='solid', zorder=0)
     
     plt.title(title)
     plt.savefig('.../test.png')
