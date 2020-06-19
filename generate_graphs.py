@@ -196,6 +196,45 @@ def create_scatter(
     plt.savefig('../test.png')
     plt.close()
 
+
+def create_violin(
+    df,
+    column_x,
+    column_y,    
+    x_axis_label,
+    y_axis_label,
+    title,
+    vertical: bool,
+#     splice_required = False,
+#     bar_values: list = [],
+):
+
+    fontsize = 10
+
+#     orientation = ""
+#     if (vertical):
+#         orientation = "v"
+#     else:
+#         orientation = "h"
+        
+    fig, axes = plt.subplots()
+    
+    sns.violinplot(
+        column_x,
+        column_y, 
+        data=df, 
+        ax = axes,
+        orient = "v"
+    )
+
+    axes.yaxis.grid(True)
+    axes.set_xlabel(x_axis_label)
+    axes.set_ylabel(y_axis_label)
+    
+    axes.set_title(title)
+    plt.savefig('.../test.png')
+    plt.close()
+
 #####################################################
 ########   HELPER FUNCTIONS   #######################
 
