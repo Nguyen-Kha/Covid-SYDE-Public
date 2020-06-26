@@ -172,7 +172,6 @@ def create_pie(
         autopct = '%1.1f%%',
         startangle = 90,
         labeldistance = None,
-        color = colour_rotation
        )
     
     plt.title(label = title)
