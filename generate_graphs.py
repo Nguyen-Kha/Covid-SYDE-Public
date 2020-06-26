@@ -5,6 +5,24 @@ import seaborn as sns
 from collections import Counter
 
 #####################################################
+########   DEFAULT VALUES   #########################
+
+def global_styling():
+    styles = {
+        'axes.titlesize' : 20,
+        'axes.labelsize' : 16,
+        'lines.linewidth' : 20,
+        'lines.markersize' : 20,
+        'xtick.labelsize' : 14,
+        'ytick.labelsize' : 14,
+        'legend.fontsize': 16,
+        'font.size': 18,
+    }
+    plt.rcParams.update(styles)
+
+# def apply_colours():
+
+#####################################################
 ########   GRAPH FUNCTIONS   ########################
 
 # BAR CHART
@@ -17,6 +35,7 @@ def create_bar(
     vertical: bool,
     splice_required = False,
     bar_values: list = [],
+    colour_rotation: list = ['blue']
 ): # TODO: INCOMPLETE - Steps, Ticks, Styles
     """
     vertical: True for vertical bar graph, False for horizontal graph
@@ -33,8 +52,8 @@ def create_bar(
         count[value] += 1
     
     df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
-    if x_bar_values:
-        df_temp.reindex(x_bar_values)
+    if bar_values:
+        df_temp.reindex(bar_values)
 
     fig, ax = plt.subplots(figsize = (11,9))
     
@@ -43,7 +62,8 @@ def create_bar(
             x = df_temp['title'],
             height = df_temp['values'],
             align = 'center',
-            zorder = 3
+            zorder = 3,
+            color = colour_rotation
         )
         ax.set_xlabel(x_axis_label)
         ax.set_ylabel(y_axis_label)
@@ -53,7 +73,8 @@ def create_bar(
             y = df_temp['title'],
             width = df_temp['values'],
             align = 'center',
-            zorder = 3
+            zorder = 3,
+            color = colour_rotation
         )
         ax.set_xlabel(x_axis_label)
         ax.set_ylabel(y_axis_label)
@@ -63,6 +84,7 @@ def create_bar(
     ax.grid(color='w', linestyle='solid', zorder=0)
     
     plt.title(title)
+    global_styling()
     plt.savefig('.../test.png')
     plt.close()
 
@@ -96,6 +118,7 @@ def create_density(
         label = x_column_name
     )
 
+    global_styling()
     plt.savefig('../test.png')
     plt.close()   
 
@@ -117,6 +140,7 @@ def create_line(
         data = df_temp
     )
     plt.title(label = title)
+    global_styling()
     plt.savefig('../test.png')
     plt.close
 
@@ -126,7 +150,8 @@ def create_pie(
     df,
     column_name,
     title,
-    splice_required = False
+    splice_required = False,
+    colour_rotation: list = ['blue', 'red', 'green']
 ): # TODO: TEST
     count = Counter()
     if(splice_required):
@@ -147,12 +172,14 @@ def create_pie(
         autopct = '%1.1f%%',
         startangle = 90,
         labeldistance = None,
+        color = colour_rotation
        )
     
     plt.title(label = title)
     plt.legend(df_temp['title'], title='Legend')
     plt.axis('equal')
 
+    global_styling()
     fig.savefig('.../test.png')
     plt.close()
 
@@ -193,6 +220,8 @@ def create_scatter(
     plt.title(label = title)
     plt.xlabel(x_axis_label)
     plt.ylabel(y_axis_label)
+
+    global_styling()
     plt.savefig('../test.png')
     plt.close()
 
@@ -232,6 +261,7 @@ def create_violin(
     axes.set_ylabel(y_axis_label)
     
     axes.set_title(title)
+    global_styling()
     plt.savefig('.../test.png')
     plt.close()
 
