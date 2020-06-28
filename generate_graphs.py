@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-# import numpy as np
+import numpy as np
+import math
 from collections import Counter
 
 #####################################################
@@ -35,12 +36,15 @@ def create_bar(
     vertical: bool,
     splice_required = False,
     bar_values: list = [],
-    colour_rotation: list = ['blue']
+    colour_rotation: list = ['blue'],
+    x_increment = None,
+    y_increment = None
 ): # TODO: INCOMPLETE - Steps, Ticks, Styles
     """
     vertical: True for vertical bar graph, False for horizontal graph
     """
-
+    x_max_adjustment = 1
+    y_max_adjustment = 1
     count = Counter()
 #     if(splice_required):
 #         column_values = splice_cells_with_commas(df, column_name)
@@ -52,10 +56,13 @@ def create_bar(
         count[value] += 1
     
     df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
-    if bar_values:
-        df_temp.reindex(bar_values)
+    if x_bar_values:
+        df_temp.reindex(x_bar_values)
 
     fig, ax = plt.subplots(figsize = (11,9))
+    
+    if(not y_increment):
+        y_increment = math.ceil(max(df_temp['values']) / 10)
     
     if(vertical):
         ax.bar(
@@ -67,7 +74,8 @@ def create_bar(
         )
         ax.set_xlabel(x_axis_label)
         ax.set_ylabel(y_axis_label)
-        # plt.xticks()
+#         ax.xaxis.set_ticks(np.arange(0, max(df_temp['title'])+x_max_adjustment, 1.0))
+        ax.yaxis.set_ticks(np.arange(0, max(df_temp['values'])+y_max_adjustment, y_increment))
     else:
         ax.barh(
             y = df_temp['title'],
@@ -78,8 +86,9 @@ def create_bar(
         )
         ax.set_xlabel(x_axis_label)
         ax.set_ylabel(y_axis_label)
-        # plt.yticks()
-
+#         ax.xaxis.set_ticks(np.arange(min(df_temp['title']), max(df_temp['title'])+1, 1.0))
+#         ax.yaxis.set_ticks(np.arange(min(df_temp['values']), max(df_temp['values'])+1, 5.0))
+    
     plt.rcParams['axes.facecolor'] = '#E6E6E6'
     ax.grid(color='w', linestyle='solid', zorder=0)
     
