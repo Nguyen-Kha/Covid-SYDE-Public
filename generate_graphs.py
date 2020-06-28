@@ -273,7 +273,95 @@ def create_violin(
     plt.savefig('.../test.png')
     plt.close()
 
-def BQDQ_overlap(
+def create_BQDQ_beside(
+    df,
+    column_name_BQ,
+    column_name_DQ,
+    x_axis_label,
+    y_axis_label,
+    title,
+    vertical: bool,
+    splice_required: bool = False,
+    bar_values: list = [],
+    colour_rotation: list = ['blue', 'red'],
+):
+    count1 = Counter()
+    count2 = Counter()
+    bar_width = 0.35
+#     if(splice_required):
+#         column_values = splice_cells_with_commas(df, column_name)
+#     else:
+#         column_values = df[column_name]
+
+#     for value in column_values:
+    for value in df[column_name_BQ]:
+        count1[value] += 1
+    for value in df[column_name_DQ]:
+        count2[value] += 1
+    
+    df_temp1 = pd.DataFrame({'title': list(count1.keys()), 'values': list(count1.values())})
+    df_temp2 = pd.DataFrame({'title': list(count2.keys()), 'values': list(count2.values())})
+    if bar_values:
+        df_temp.reindex(bar_values)
+
+    fig, ax = plt.subplots(figsize = (11,9))
+    
+#     if(not y_increment):
+#         y_increment = math.ceil(max(df_temp['values']) / 10)
+    y_increment = 2
+    
+    if(vertical):
+        ax.bar(
+            x = df_temp1['title'] - bar_width/2,
+            height = df_temp1['values'],
+            align = 'center',
+            zorder = 3,
+            color = colour_rotation[0],
+            label = column_name_BQ,
+            alpha = 0.5,
+            width = bar_width
+        )
+        ax.set_xlabel(x_axis_label)
+        ax.set_ylabel(y_axis_label)
+#         ax.xaxis.set_ticks(np.arange(0, max(df_temp['title'])+x_max_adjustment, 1.0))
+        ax.yaxis.set_ticks(np.arange(0, max(df_temp1['values'])+1, y_increment))
+    
+        ax.bar(
+            x = df_temp2['title'] + bar_width/2,
+            height = df_temp2['values'],
+            align = 'center',
+            zorder = 3,
+            color = colour_rotation[1],
+            label = column_name_DQ,
+            alpha = 0.5,
+            width = bar_width
+        )
+        ax.set_xlabel(x_axis_label)
+        ax.set_ylabel(y_axis_label)
+#         ax.xaxis.set_ticks(np.arange(0, max(df_temp['title'])+x_max_adjustment, 1.0))
+        ax.yaxis.set_ticks(np.arange(0, max(df_temp2['values'])+1, y_increment))
+    else:
+        ax.barh(
+            y = df_temp['title'],
+            width = df_temp['values'],
+            align = 'center',
+            zorder = 3,
+            color = colour_rotation[0]
+        )
+        ax.set_xlabel(x_axis_label)
+        ax.set_ylabel(y_axis_label)
+#         ax.xaxis.set_ticks(np.arange(min(df_temp['title']), max(df_temp['title'])+1, 1.0))
+#         ax.yaxis.set_ticks(np.arange(min(df_temp['values']), max(df_temp['values'])+1, 5.0))
+    
+    plt.rcParams['axes.facecolor'] = '#E6E6E6'
+    ax.grid(color='w', linestyle='solid', zorder=0)
+    plt.legend(title="Legend")
+    plt.title(title)
+    global_styling()
+    plt.savefig('.../test.png')
+    plt.close()
+
+def create_BQDQ_overlap(
     df,
     column_name_BQ,
     column_name_DQ,
