@@ -1,3 +1,7 @@
+from generate_graphs import *
+
+df = pd.read_csv('')
+
 ### COLUMN NAME ARRAYS ###
 # PIE Chart #
 pie_columns_arr = [
@@ -39,8 +43,18 @@ pie_columns_arr = [
 # PIE Chart #
 for c in pie_columns_arr:
     create_pie(
-        df_data_vis_std,
+        df,
         c,
         c + 'column',
         splice_required = False
     )
+
+
+#################################
+####   BQ DQ CHARTS #############
+
+create_BQDQ_overlap(df, 'Study Habits BQ', 'Study Habits DQ', 'Habits', '% of Respondents', 'Study Habits', vertical=True, colour_rotation=['#fe5f55', '#087e8b'])
+create_BQDQ_overlap(df, 'Side Projects BQ', 'Side Projects DQ', 'Amount of Side Projects', '% of Respondents', 'Side Projects', vertical=True, colour_rotation=['#fe5f55', '#087e8b'])
+create_BQDQ_overlap(df, 'Class Attendance BQ', 'Class Attendance DQ', 'How Often the Respondent Attended Classes', '% of Respondents', 'Classes Attended', vertical=True, colour_rotation=['#fe5f55', '#087e8b'])
+create_BQDQ_overlap(df, 'Days of Exercise per Week BQ', 'Days of Exercise per Week DQ', 'Days Exercised per Week', '% of Respondents', 'Days Exercised per Week', vertical=True, colour_rotation=['#fe5f55', '#087e8b'])
+create_BQDQ_overlap(df, 'Average Stress Levels BQ', 'Average Stress Levels DQ', 'Stress Levels', '% of Respondents', 'Stress Levels', vertical=True, colour_rotation=['#fe5f55', '#087e8b'])
