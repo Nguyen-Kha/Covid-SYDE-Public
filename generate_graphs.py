@@ -28,70 +28,162 @@ def global_styling():
 
 # BAR CHART
 def create_bar(
-    df,
+    df_a,
     column_name,
-    x_axis_label,
-    y_axis_label,
+    title_label,
+    values_label,
     title,
     vertical: bool,
-    splice_required = False,
-    bar_values: list = [],
-    colour_rotation: list = ['blue'],
-    x_increment = None,
-    y_increment = None
-): # TODO: INCOMPLETE - Steps, Ticks, Styles
-    """
-    vertical: True for vertical bar graph, False for horizontal graph
-    """
-    x_max_adjustment = 1
-    y_max_adjustment = 1
+    title_increment = None,
+    values_increment = None,
+    values_max = None,
+    splice_required: bool = False,
+    labels: list = [],
+    colours_list = [],
+    convert_to_string = False,
+    one_seven_scale = False,
+):
+    df = pd.DataFrame()
+    if (not colours_list):
+        colours = sns.color_palette('muted')
+    else:
+        colours = colours_list
+    
     count = Counter()
+    
+    if(df_a[column_name].isnull().values.any()):
+        df[column_name] = df_a[column_name].dropna(axis=0)
+    else:
+        df = df_a
+    
+    if(convert_to_string):
+        df[column_name] = df[column_name].astype(str)
+        
 #     if(splice_required):
 #         column_values = splice_cells_with_commas(df, column_name)
 #     else:
 #         column_values = df[column_name]
 
 #     for value in column_values:
+    ######################
+    ## Count the amount of instances of each occurence in the dataset
     for value in df[column_name]:
         count[value] += 1
     
-    df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
-    if bar_values:
-        df_temp.reindex(bar_values)
+    if(one_seven_scale):
+        count = {str(int(k)):int(v) for k,v in count.items()}
+        
+     ######################
+    ## Put the counted values into a new dataframe
+    if(labels):
+        title_temp = list(count.keys())
+        values_temp = list(count.values())
+        dictionary = {title_temp[i] : values_temp[i] for i in range(0, len(title_temp))}
+
+        df_temp = pd.DataFrame()
+        df_temp['title'] = labels
+        df_temp['values'] = 0
+
+        for key, value in dictionary.items():
+            for i in range(0, len(df_temp)):
+                if(df_temp['title'][i] == key):
+                    df_temp['values'][i] = value
+    
+    else:
+        df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
+    
+    ######################
+    ## Convert amount of people responded into percentages
+    number_of_answers = len(df.index)
+    df_temp['values'] = df_temp['values'] / number_of_answers * 100
+    
+    ###################
+    ## Set axis interval increments
+    if(not title_increment):
+        title_increment = 1
+    
+    if(not values_max):
+        values_max = max(df_temp['values'])
+        
+    if(not values_increment):
+        values_increment = math.ceil(values_max / 10)
+        
+    x = np.arange(len(labels))  # the label locations
 
     fig, ax = plt.subplots(figsize = (11,9))
     
-    if(not y_increment):
-        y_increment = math.ceil(max(df_temp['values']) / 10)
+    if(labels):
+        if(vertical):
+            ax.bar(
+                x = x,
+                height = df_temp['values'].values,
+                align = 'center',
+                zorder = 3,
+#                 color = colours_list[0],
+                color = colours,
+                label = column_name,
+                alpha = 0.75,
+            )
+            ax.set_xlabel(title_label)
+            ax.set_ylabel(values_label)
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels)
+            ax.yaxis.set_ticks(np.arange(0, values_max, values_increment))
+
+        else:
+            ax.barh(
+                # y = df_temp['title'],
+                y = x,
+                # width = df_temp['values'],
+                width = df_temp['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours,
+                label = column_name,
+                alpha = 0.75,
+            )
+            ax.set_xlabel(values_label)
+            ax.set_ylabel(title_label)
+            ax.set_yticks(x)
+            ax.set_yticklabels(labels)
+            ax.xaxis.set_ticks(np.arange(0, values_max, values_increment))
     
-    if(vertical):
-        ax.bar(
-            x = df_temp['title'],
-            height = df_temp['values'],
-            align = 'center',
-            zorder = 3,
-            color = colour_rotation
-        )
-        ax.set_xlabel(x_axis_label)
-        ax.set_ylabel(y_axis_label)
-#         ax.xaxis.set_ticks(np.arange(0, max(df_temp['title'])+x_max_adjustment, 1.0))
-        ax.yaxis.set_ticks(np.arange(0, max(df_temp['values'])+y_max_adjustment, y_increment))
-    else:
-        ax.barh(
-            y = df_temp['title'],
-            width = df_temp['values'],
-            align = 'center',
-            zorder = 3,
-            color = colour_rotation
-        )
-        ax.set_xlabel(x_axis_label)
-        ax.set_ylabel(y_axis_label)
-#         ax.xaxis.set_ticks(np.arange(min(df_temp['title']), max(df_temp['title'])+1, 1.0))
-#         ax.yaxis.set_ticks(np.arange(min(df_temp['values']), max(df_temp['values'])+1, 5.0))
+    else: 
+        if(vertical):
+            ax.bar(
+                x = df_temp['title'],
+                height = df_temp['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours,
+                label = column_name,
+                alpha = 0.75,
+            )
+            ax.set_xlabel(title_label)
+            ax.set_ylabel(values_label)
+            ax.yaxis.set_ticks(np.arange(0, values_max, values_increment))
+#             ax.xaxis.set_ticks(np.arange(0, title_max, title_increment))
+
+        else:
+            ax.barh(
+                y = df_temp['title'],
+                width = df_temp['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours,
+                label = column_name,
+                alpha = 0.75,
+
+            )
+            ax.set_xlabel(values_label)
+            ax.set_ylabel(title_label)
+            ax.xaxis.set_ticks(np.arange(0, values_max, values_increment))
+#             ax.yaxis.set_ticks(np.arange(0, title_max, title_increment))       
+
     
-    plt.rcParams['axes.facecolor'] = '#E6E6E6'
+    plt.rcParams['axes.facecolor'] = '#F0F0F0'
     ax.grid(color='w', linestyle='solid', zorder=0)
-    
+    plt.legend(title="Legend", facecolor='white')
     plt.title(title)
     global_styling()
     plt.savefig('.../test.png')
@@ -273,21 +365,34 @@ def create_violin(
     plt.savefig('.../test.png')
     plt.close()
 
-def create_BQDQ_beside(
+def create_BQDQ_beside_new2(
     df,
     column_name_BQ,
     column_name_DQ,
-    x_axis_label,
-    y_axis_label,
+    title_label,
+    values_label,
     title,
     vertical: bool,
+    title_increment = None,
+    values_increment = None,
     splice_required: bool = False,
-    bar_values: list = [],
-    colour_rotation: list = ['blue', 'red'],
+    labels: list = [],
+    colours_list = ['#4878d0', '#d65f5f'],
+    convert_to_string = False
 ):
+    if (not colours_list):
+        colours = sns.color_palette('muted')
+    else:
+        colours = colours_list
+    
     count1 = Counter()
     count2 = Counter()
     bar_width = 0.35
+    
+    if(convert_to_string):
+        df[column_name_BQ] = df[column_name_BQ].astype(str)
+        df[column_name_DQ] = df[column_name_DQ].astype(str)
+        
 #     if(splice_required):
 #         column_values = splice_cells_with_commas(df, column_name)
 #     else:
@@ -300,92 +405,183 @@ def create_BQDQ_beside(
         count1[value] += 1
     for value in df[column_name_DQ]:
         count2[value] += 1
-    
-    ######################
+        
+     ######################
     ## Put the counted values into a new dataframe
-    df_temp1 = pd.DataFrame({'title': list(count1.keys()), 'values': list(count1.values())})
-    df_temp2 = pd.DataFrame({'title': list(count2.keys()), 'values': list(count2.values())})
+    if(labels):
+        title_temp_BQ = list(count1.keys())
+        title_temp_DQ = list(count2.keys())
+        values_temp_BQ = list(count1.values())
+        values_temp_DQ = list(count2.values())
+        dictionary_BQ = {title_temp_BQ[i] : values_temp_BQ[i] for i in range(0, len(title_temp_BQ))}
+        dictionary_DQ = {title_temp_DQ[i] : values_temp_DQ[i] for i in range(0, len(title_temp_DQ))}
+
+        df_temp1 = pd.DataFrame()
+        df_temp1['title'] = labels
+        df_temp1['values'] = 0
+        
+        df_temp2 = pd.DataFrame()
+        df_temp2['title'] = labels
+        df_temp2['values'] = 0
+
+        for key, value in dictionary_BQ.items():
+            for i in range(0, len(df_temp1)):
+                if(df_temp1['title'][i] == key):
+                    df_temp1['values'][i] = value
+                    
+        for key, value in dictionary_DQ.items():
+            for i in range(0, len(df_temp2)):
+                if(df_temp2['title'][i] == key):
+                    df_temp2['values'][i] = value
+    
+    else:
+        df_temp1 = pd.DataFrame({'title': list(count1.keys()), 'values': list(count1.values())})
+        df_temp2 = pd.DataFrame({'title': list(count2.keys()), 'values': list(count2.values())})
     
     ######################
     ## Convert amount of people responded into percentages
-    df_temp1['values'] = df_temp1['values'] / 49 * 100
-    df_temp2['values'] = df_temp2['values'] / 49 * 100
+    number_of_answers1 = len(df_temp1.index)
+    number_of_answers2 = len(df_temp2.index)
+    df_temp1['values'] = df_temp1['values'] / number_of_answers1 * 100
+    df_temp2['values'] = df_temp2['values'] / number_of_answers2 * 100
     
-#     if bar_values:
-#         df_temp.reindex(bar_values)
-
-    fig, ax = plt.subplots(figsize = (11,9))
-
+    if(max(df_temp1['values']) < max(df_temp2['values'])):
+        values_max = max(df_temp2['values']) +1
+    else:
+        values_max = max(df_temp1['values']) +1
+    
     ###################
     ## Set axis interval increments
-    if(not x_increment1):
-        x_increment1 = 1
-
-    if(not x_increment2):
-        x_increment2 = 1
-    
-    if(not y_increment1):
-        y_increment1 = math.ceil(max(df_temp1['values']) / 10)
-
-    if(not y_increment2):
-        y_increment2 = math.ceil(max(df_temp1['values']) / 10)
-
-    ##############
-    ## create max value comparing all the graphs on the y axis, replace max(df_temp#['title/values']) ####
-    
-    if(max(df_temp1['title']) < max(df_temp2['title'])):
-        x_max = max(df_temp2['title']) +1
-    else:
-        x_max = max(df_temp1['title']) +1
+    if(not title_increment):
+        title_increment = 1
         
-    if(max(df_temp1['values']) < max(df_temp2['values'])):
-        y_max = max(df_temp2['values']) +1
-    else:
-        y_max = max(df_temp1['values']) +1
-    
-    if(vertical):
-        ax.bar(
-            x = df_temp1['title'] - bar_width/2,
-            height = df_temp1['values'],
-            align = 'center',
-            zorder = 3,
-            color = colour_rotation[0],
-            label = column_name_BQ,
-            alpha = 0.75,
-            width = bar_width
-        )
-        ax.set_xlabel(x_axis_label)
-        ax.set_ylabel(y_axis_label)
-        ax.xaxis.set_ticks(np.arange(0, x_max, x_increment1))
-        ax.yaxis.set_ticks(np.arange(0, y_max, y_increment1))
-    
-        ax.bar(
-            x = df_temp2['title'] + bar_width/2,
-            height = df_temp2['values'],
-            align = 'center',
-            zorder = 3,
-            color = colour_rotation[1],
-            label = column_name_DQ,
-            alpha = 0.75,
-            width = bar_width
-        )
-        ax.set_xlabel(x_axis_label)
-        ax.set_ylabel(y_axis_label)
-        ax.xaxis.set_ticks(np.arange(0, x_max, x_increment1))
-        ax.yaxis.set_ticks(np.arange(0, y_max, y_increment1))
+    if(not values_increment):
+        values_increment = math.ceil(values_max / 10)
+        
+    x = np.arange(len(labels))  # the label locations
 
+    fig, ax = plt.subplots(figsize = (11,9))
+    
+    if(labels):
+        if(vertical):
+            ax.bar(
+                x = x - bar_width/2,
+                height = df_temp1['values'].values,
+                align = 'center',
+                zorder = 3,
+                color = colours_list[0],
+                label = column_name_BQ,
+                alpha = 0.75,
+                width = bar_width
+            )
+            ax.set_xlabel(title_label)
+            ax.set_ylabel(values_label)
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels)
+            ax.yaxis.set_ticks(np.arange(0, values_max, values_increment))
+
+            ax.bar(
+                x = x + bar_width/2,
+                height = df_temp2['values'].values,
+                align = 'center',
+                zorder = 3,
+                color = colours_list[1],
+                label = column_name_DQ,
+                alpha = 0.75,
+                width = bar_width
+            )
+
+        else:
+            ax.barh(
+                # y = df_temp['title'],
+                y = x - bar_width/2,
+                # width = df_temp['values'],
+                width = df_temp1['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours_list[0],
+                label = column_name_BQ,
+                alpha = 0.75,
+                height = bar_width
+            )
+            ax.set_xlabel(values_label)
+            ax.set_ylabel(title_label)
+            ax.set_yticks(x)
+            ax.set_yticklabels(labels)
+            ax.xaxis.set_ticks(np.arange(0, values_max, values_increment))
+
+            ax.barh(
+                # y = df_temp['title'],
+                y = x + bar_width/2,
+                # width = df_temp['values'],
+                width = df_temp2['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours_list[1],
+                label = column_name_DQ,
+                alpha = 0.75,
+                height = bar_width
+            )
+    
     else:
-        ax.barh(
-            # y = df_temp['title'],
-            # width = df_temp['values'],
-            align = 'center',
-            zorder = 3,
-            color = colour_rotation[0]
-        )
-        ax.set_xlabel(x_axis_label)
-        ax.set_ylabel(y_axis_label)
-#         ax.xaxis.set_ticks(np.arange(min(df_temp['title']), max(df_temp['title'])+1, 1.0))
-#         ax.yaxis.set_ticks(np.arange(min(df_temp['values']), max(df_temp['values'])+1, 5.0))
+        if(max(df_temp1['title']) < max(df_temp2['title'])):
+            title_max = max(df_temp2['title']) +1
+        else:
+            title_max = max(df_temp1['title']) +1
+            
+        if(vertical):
+            ax.bar(
+                x = df_temp1['title'] - bar_width/2,
+                height = df_temp1['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours_list[0],
+                label = column_name_BQ,
+                alpha = 0.75,
+                width = bar_width
+            )
+            ax.set_xlabel(title_label)
+            ax.set_ylabel(values_label)
+            ax.yaxis.set_ticks(np.arange(0, values_max, values_increment))
+            ax.xaxis.set_ticks(np.arange(0, title_max, title_increment))
+
+            ax.bar(
+                x = df_temp2['title'] + bar_width/2,
+                height = df_temp2['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours_list[1],
+                label = column_name_DQ,
+                alpha = 0.75,
+                width = bar_width
+            )
+
+        else:
+            ax.barh(
+                y = df_temp1['title'] - bar_width/2,
+                width = df_temp1['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours_list[0],
+                label = column_name_BQ,
+                alpha = 0.75,
+                height = bar_width
+            )
+            ax.set_xlabel(values_label)
+            ax.set_ylabel(title_label)
+            ax.xaxis.set_ticks(np.arange(0, values_max, values_increment))
+            ax.yaxis.set_ticks(np.arange(0, title_max, title_increment))       
+
+            ax.barh(
+                y = df_temp2['title'] + bar_width/2,
+                width = df_temp2['values'],
+                align = 'center',
+                zorder = 3,
+                color = colours_list[1],
+                label = column_name_BQ,
+                alpha = 0.75,
+                height = bar_width
+            )
     
     plt.rcParams['axes.facecolor'] = '#F0F0F0'
     ax.grid(color='w', linestyle='solid', zorder=0)
@@ -401,6 +597,7 @@ def create_BQDQ_beside(
 def splice_cells_with_commas(df, column_name): # TODO: TEST
     """
     RETURNS: ARRAY of values to be counted with COUNTER
+    # TODO: Do some dictionary work instead
     """
     spliced_array = []
     for item in df[column_name]:
