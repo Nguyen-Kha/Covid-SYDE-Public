@@ -30,14 +30,14 @@ def clean_range_of_one(date):
 
 def clean_range_of_one_applymap(df):
     df[[
-        'Hours of Sleep per Night DQ',
+        'Hours of Sleep per Night BQ',
         'Hours Spent Eating/Cooking per Day BQ',
         'Hours Spent Interneting per Day BQ',
         'Hours of Sleep per Night DQ',
         'Hours Spent Eating/Cooking per Day DQ',
         'Hours Spent Interneting per Day DQ'
     ]] = df[[
-        'Hours of Sleep per Night DQ',
+        'Hours of Sleep per Night BQ',
         'Hours Spent Eating/Cooking per Day BQ',
         'Hours Spent Interneting per Day BQ',
         'Hours of Sleep per Night DQ',
@@ -58,11 +58,53 @@ def clean_range_of_two(date):
     else:
         return date
 
+def clean_range_of_two_applymap(df):
+    df[[
+        'Hours Spent Outside Home per Day BQ',
+        'Hours Spent Socializing per Day BQ',
+        'Hours Spent Outside Home per Day DQ',
+        'Hours Spent Socializing per Day DQ',
+    ]] = df[[
+        'Hours Spent Outside Home per Day BQ',
+        'Hours Spent Socializing per Day BQ',
+        'Hours Spent Outside Home per Day DQ',
+        'Hours Spent Socializing per Day DQ',
+    ]].applymap(clean_range_of_two)
+    return df
+
 def clean_range_of_four(date):
     if(date == '09-May'):
         return '5 - 9'
     elif (date == '14-Oct'):
         return '10 - 14'
+    else:
+        return date
+
+def clean_range_of_four_applymap(df):
+    df[[
+        'Hours Spent Studying For SYDE 211',
+        'Hours Spent Studying For SYDE 223',
+        'Hours Spent Studying For SYDE 261',
+        'Hours Spent Studying For SYDE 283',
+        'Hours Spent Studying For SYDE 285',
+        'Hours Spent Studying For Electives',
+        'Hours Spent on SYDE 223 Practice Exercise 2',
+        'Hours Spent on SYDE 261 Project 2',
+        'Hours Spent on SYDE 261 Project 3',
+        'Hours Spent on SYDE 285 Term Project'
+    ]] = df[[
+        'Hours Spent Studying For SYDE 211',
+        'Hours Spent Studying For SYDE 223',
+        'Hours Spent Studying For SYDE 261',
+        'Hours Spent Studying For SYDE 283',
+        'Hours Spent Studying For SYDE 285',
+        'Hours Spent Studying For Electives',
+        'Hours Spent on SYDE 223 Practice Exercise 2',
+        'Hours Spent on SYDE 261 Project 2',
+        'Hours Spent on SYDE 261 Project 3',
+        'Hours Spent on SYDE 285 Term Project'
+    ]].applymap(clean_range_of_four)
+    return df
 
 def convert_string_to_list(string):
     string = string.split(',')
@@ -80,3 +122,21 @@ def convert_string_to_list_applymap(df):
 # Reformat answers from column AH
 
 # Multiple options column BS
+
+#################
+def execute_all_cleaning(df):
+    df = clean_range_of_one_applymap(df)
+    df = clean_range_of_two_applymap(df)
+    df = clean_range_of_four_applymap(df)
+    return df
+
+
+df_dv_std = pd.read_csv('../PRIVATE-Covid-SYDE/csv/data_vis_std.csv')
+df_dv_text = pd.read_csv('../PRIVATE-Covid-SYDE/csv/data_vis_text.csv')
+
+df_dv_std = execute_all_cleaning(df_dv_std)
+df_dv_text = execute_all_cleaning(df_dv_text)
+
+path = r'C:\Users\Kha\Documents\Programming\Python\PRIVATE-Covid-SYDE\csv\\'
+df_dv_std.to_csv(path + 'data_vis_std.csv')
+df_dv_text.to_csv(path + 'data_vis_text.csv')

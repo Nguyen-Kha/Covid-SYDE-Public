@@ -198,8 +198,8 @@ def reverse_scale(number):
     scale_number = 7
     return (scale_number - number + 1)
 
-df_data_vis_std = pd.read_csv('')
-df_data_vis_text = pd.read_csv('')
+df_data_vis_std = pd.read_csv('../PRIVATE-Covid-SYDE/csv/data_vis_std.csv')
+df_data_vis_text = pd.read_csv('../PRIVATE-Covid-SYDE/csv/data_vis_text.csv')
 # df_num_std = pd.read_csv('')
 # df_num_text = pd.read_csv('')
 
