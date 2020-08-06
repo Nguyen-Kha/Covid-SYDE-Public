@@ -4,6 +4,7 @@ import seaborn as sns
 import numpy as np
 import math
 from collections import Counter
+from wordcloud import WordCloud
 
 #####################################################
 ########   DEFAULT VALUES   #########################
@@ -59,16 +60,17 @@ def create_bar(
     if(convert_to_string):
         df[column_name] = df[column_name].astype(str)
         
-#     if(splice_required):
-#         column_values = splice_cells_with_commas(df, column_name)
-#     else:
-#         column_values = df[column_name]
-
-#     for value in column_values:
     ######################
     ## Count the amount of instances of each occurence in the dataset
-    for value in df[column_name]:
-        count[value] += 1
+    if(splice_required):
+        column_values = splice_cells_with_commas(df, column_name)
+        for i in column_values:
+            count[i] += 1
+            
+    else:
+#         column_values = df[column_name]
+        for value in df[column_name]:
+            count[value] += 1 
     
     if(one_seven_scale):
         count = {str(int(k)):int(v) for k,v in count.items()}
@@ -590,6 +592,25 @@ def create_BQDQ_beside_new2(
     global_styling()
     plt.savefig('.../test.png')
     plt.close()
+
+def create_wordcloud(
+    df,
+    column_name,
+    save_name
+):
+    
+    if(df[column_name].isnull().values.any()):
+        df[column_name] = df[column_name].dropna(axis=0)
+    
+    count = Counter()
+    column_values = splice_cells_with_commas(df, column_name)
+    for i in column_values:
+        count[i] += 1
+    
+    wordcloud = WordCloud(width = 600, height = 400, background_color = 'white').generate_from_frequencies(count)
+    plt.imshow(wordcloud, interpolation = 'bilinear')
+    plt.axis("off")
+    wordcloud.to_file('../' + save_name + '_wordmap.png')
 
 #####################################################
 ########   HELPER FUNCTIONS   #######################
