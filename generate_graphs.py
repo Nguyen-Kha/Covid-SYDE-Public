@@ -5,6 +5,7 @@ import numpy as np
 import math
 from collections import Counter
 from wordcloud import WordCloud
+import datetime
 
 #####################################################
 ########   DEFAULT VALUES   #########################
@@ -611,6 +612,81 @@ def create_wordcloud(
     plt.imshow(wordcloud, interpolation = 'bilinear')
     plt.axis("off")
     wordcloud.to_file('../' + save_name + '_wordmap.png')
+
+def create_date_heatmap(
+    df,
+    column_name,
+    start_year: int,
+    start_month: int,
+    start_day: int,
+    end_year: int,
+    end_month: int,
+    end_day: int,
+    show_numbers: bool,
+    additional_dates: list = []
+):
+    """
+        years: 2020
+        months: 1, 2, ..., 12
+        days: 1, 2, ..., 31
+    """
+    count = Counter()
+
+    dt = datetime.datetime(start_year, start_month, start_day)
+    end = datetime.datetime(end_year, end_month, end_day)
+    step = datetime.timedelta(days = 1)
+
+    labels = []
+
+    while dt < end:
+        labels.append(str(dt.strftime('%#m/%#d/%Y')))
+        dt += step
+    
+    if(additional_dates):
+        for i in range(0, len(additional_dates)):
+            labels.append(additional_dates[i])
+    # labels.append('1/1/2020')
+    # labels.append('2/1/2020')
+
+    # Generate dictionary of count occurences for each date
+    for value in df[column_name]:
+        count[value] += 1
+    
+    title_temp = list(count.keys())
+    values_temp = list(count.values())
+    dictionary = {title_temp[i] : values_temp[i] for i in range(0, len(title_temp))}
+
+    df_temp = pd.DataFrame()
+    df_temp['title'] = labels
+    df_temp['values'] = 0
+
+    for key, value in dictionary.items():
+        for i in range(0, len(df_temp)):
+            if(df_temp['title'][i] == key):
+                df_temp['values'][i] = value
+
+    # create the np array of occurences
+    temp_list = df_temp['values'].tolist()
+    temp_double_list = []
+    temp_double_list.append(temp_list)
+    heatmap_array = np.array(temp_double_list)
+    
+    fig, ax = plt.subplots(figsize = (30, 5))
+    im = ax.imshow(heatmap_array)
+    ax.set_xticks(np.arange(len(labels)))
+    ax.set_xticklabels(labels)
+    
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="right",
+         rotation_mode="anchor")
+    
+    if(show_numbers):
+        for i in range(0, 1):
+            for j in range(len(labels)):
+                text = ax.text(j, i, heatmap_array[i, j],
+                            ha="center", va="center", color="w")
+    
+    plt.show()
+
 
 #####################################################
 ########   HELPER FUNCTIONS   #######################
