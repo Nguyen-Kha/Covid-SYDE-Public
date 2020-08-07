@@ -728,7 +728,7 @@ def create_date_heatmap(
 #####################################################
 ########   HELPER FUNCTIONS   #######################
 
-def create_postings_for_positions_data_structure(df, column_name_key, column_name_value):
+def create_postings_for_positions_df(df, column_name_key, column_name_value):
     """
     Dictionary with key associated to list
     {'Position': [1,2,3,4,5]}
@@ -739,10 +739,11 @@ def create_postings_for_positions_data_structure(df, column_name_key, column_nam
 
     # Splice keys and copy values to its dictionary/list
     title_column_values = splice_cells_with_commas(df, column_name_key)
-    for i in range(0, len(title_column_values)):
-        count_title[i] += 1
+    for value in title_column_values:
+        count_title[value] += 1
+    
     titles = list(count_title.keys()) # list of job fields
-
+    
     # Setup dictionary of key: value as list
     for i in range(0, len(titles)):
         dictionary[titles[i]] = []
@@ -750,13 +751,25 @@ def create_postings_for_positions_data_structure(df, column_name_key, column_nam
     # Go through titles
     for i in range(0, len(df[column_name_key])):
         if(type(df[column_name_key]) != float):
-            potential_list = df[column_name_key].split(', ')
+            potential_list = df[column_name_key][i].split(', ')
             for single in potential_list:
                 dictionary[single].append(df[column_name_value][i])
 
     # Create a dataframe with keys as df column titles
-    
+
+    largest_list_size = []
+    for key, value in dictionary.items():
+        largest_list_size.append(len(value))
+    max_list_size = max(largest_list_size)
+
+    for key, value in dictionary.items():
+        append_None = max_list_size - len(value)
+        for i in range(0, append_None):
+            dictionary[key].append(None)
+        df_temp[key] = value
+        
     return df_temp
+
 
 def splice_cells_with_commas(df, column_name): # TODO: TEST
     """
