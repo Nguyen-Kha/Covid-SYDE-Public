@@ -192,6 +192,43 @@ def create_bar(
     plt.savefig('.../test.png')
     plt.close()
 
+# BOX PLOT
+def create_boxplot(
+    df_a,
+    column_name1,
+    column_name2,
+    title_label,
+    values_label,
+    title,
+    vertical: bool,
+    splice_required: bool = False,
+    colours_list = [],
+    convert_to_string = False,
+):
+    df = pd.DataFrame()
+    if (not colours_list):
+        colours = sns.color_palette('muted')
+    else:
+        colours = colours_list
+
+    count = Counter()
+    
+    # Drop null rows
+    if(df_a[column_name1].isnull().values.any() or df_a[column_name2].isnull().values.any()):
+        df[column_name1] = df_a[column_name1].dropna(axis=0)
+        df[column_name2] = df_a[column_name2].dropna(axis=0)
+    else:
+        df = df_a
+
+    if(convert_to_string):
+        df[column_name1] = df[column_name1].astype(str)
+        df[column_name2] = df[column_name2].astype(str)
+
+    # Splice
+
+    fig, ax = plt.subplots(figsize = (11,9))
+
+
 # DENSITY CHART - SHADED
 def create_density(
     df,
@@ -690,6 +727,36 @@ def create_date_heatmap(
 
 #####################################################
 ########   HELPER FUNCTIONS   #######################
+
+def create_postings_for_positions_data_structure(df, column_name_key, column_name_value):
+    """
+    Dictionary with key associated to list
+    {'Position': [1,2,3,4,5]}
+    """
+    df_temp = pd.DataFrame()
+    count_title = Counter()
+    dictionary = {}
+
+    # Splice keys and copy values to its dictionary/list
+    title_column_values = splice_cells_with_commas(df, column_name_key)
+    for i in range(0, len(title_column_values)):
+        count_title[i] += 1
+    titles = list(count_title.keys()) # list of job fields
+
+    # Setup dictionary of key: value as list
+    for i in range(0, len(titles)):
+        dictionary[titles[i]] = []
+    
+    # Go through titles
+    for i in range(0, len(df[column_name_key])):
+        if(type(df[column_name_key]) != float):
+            potential_list = df[column_name_key].split(', ')
+            for single in potential_list:
+                dictionary[single].append(df[column_name_value][i])
+
+    # Create a dataframe with keys as df column titles
+    
+    return df_temp
 
 def splice_cells_with_commas(df, column_name): # TODO: TEST
     """
