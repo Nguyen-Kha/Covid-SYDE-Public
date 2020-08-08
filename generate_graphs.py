@@ -74,7 +74,7 @@ def create_bar(
             count[value] += 1 
     
     if(one_seven_scale):
-        count = {str(int(k)):int(v) for k,v in count.items()}
+        count = {str(int(float(k))):int(v) for k,v in count.items()}
         
      ######################
     ## Put the counted values into a new dataframe
@@ -193,40 +193,10 @@ def create_bar(
     plt.close()
 
 # BOX PLOT
-def create_boxplot(
-    df_a,
-    column_name1,
-    column_name2,
-    title_label,
-    values_label,
-    title,
-    vertical: bool,
-    splice_required: bool = False,
-    colours_list = [],
-    convert_to_string = False,
-):
-    df = pd.DataFrame()
-    if (not colours_list):
-        colours = sns.color_palette('muted')
-    else:
-        colours = colours_list
 
-    count = Counter()
-    
-    # Drop null rows
-    if(df_a[column_name1].isnull().values.any() or df_a[column_name2].isnull().values.any()):
-        df[column_name1] = df_a[column_name1].dropna(axis=0)
-        df[column_name2] = df_a[column_name2].dropna(axis=0)
-    else:
-        df = df_a
 
-    if(convert_to_string):
-        df[column_name1] = df[column_name1].astype(str)
-        df[column_name2] = df[column_name2].astype(str)
 
-    # Splice
 
-    fig, ax = plt.subplots(figsize = (11,9))
 
 
 # DENSITY CHART - SHADED
@@ -728,12 +698,30 @@ def create_date_heatmap(
 #####################################################
 ########   HELPER FUNCTIONS   #######################
 
-def create_postings_for_positions_df(df, column_name_key, column_name_value):
+def create_dict_with_values_of_type_list(df_a, column_name_key, column_name_value):
     """
     Dictionary with key associated to list
     {'Position': [1,2,3,4,5]}
+
+    Used for when your desired key needs to be spliced, and keeps all their associated values too
+
+    Example in dataframe:
+    desired_key     |   desired_value
+    ----------------+------------------
+    Item1, Item2    |    100
+    Item1           |    200
+
+            TURNS INTO DICTIONARY
+    {'Item1': [100, 200], 'Item2': [100]}
+
     """
-    df_temp = pd.DataFrame()
+    df = pd.DataFrame()
+    if(df_a[column_name_key].isnull().values.any() or df_a[column_name_value].isnull().values.any()):
+        df[column_name_key] = df_a[column_name_key].dropna(axis=0)
+        df[column_name_value] = df_a[column_name_value].dropna(axis=0)
+    else:
+        df = df_a
+    
     count_title = Counter()
     dictionary = {}
 
@@ -754,6 +742,26 @@ def create_postings_for_positions_df(df, column_name_key, column_name_value):
             potential_list = df[column_name_key][i].split(', ')
             for single in potential_list:
                 dictionary[single].append(df[column_name_value][i])
+    
+    return dictionary
+    
+
+def create_df_from_dict_of_list(df, column_name_key, column_name_value):
+    """
+    Create dataframe with dictionary keys as columns, and all list values as values in the column,
+    and populates any empty cells with None (relative to the largest cell)
+
+    Example:
+    {'Item1': [100, 200], 'Item2': [100]}
+
+            TURNS INTO DATAFRAME
+      Item 1   |   Item 2
+    -----------+--------------
+        100    |    100
+        200    |    None
+    """
+    df_temp = pd.DataFrame()
+    dictionary = create_dict_with_values_of_type_list(df, column_name_key, column_name_value)
 
     # Create a dataframe with keys as df column titles
 
@@ -767,6 +775,25 @@ def create_postings_for_positions_df(df, column_name_key, column_name_value):
         for i in range(0, append_None):
             dictionary[key].append(None)
         df_temp[key] = value
+        
+    return df_temp
+
+def create_postings_for_positions_df(df, column_name_key, column_name_value):
+    """
+    Dictionary with key associated to list
+    {'Position': [1,2,3,4,5]}
+    """
+    dictionary = create_dict_with_values_of_type_list(df, column_name_key, column_name_value)
+
+    # Create a dataframe with keys as df column titles
+    df_temp = pd.DataFrame()
+    df_temp['col_key'] = ""
+    df_temp['col_val'] = ""
+    j = 0
+    for key, value in dictionary.items():
+        for i in range(0, len(value)):
+            df_temp.loc[j] = [key] + [value[i]]
+            j += 1
         
     return df_temp
 
