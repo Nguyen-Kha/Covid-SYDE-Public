@@ -97,6 +97,12 @@ def create_bar(
     else:
         df_temp = pd.DataFrame({'title': list(count.keys()), 'values': list(count.values())})
     
+    #####################################################################################################
+    # Drop Values
+    if(drop_values):
+        df_temp = df_temp[~df_temp['title'].isin(['I did not use any dating apps before or during quarantine'])]
+        number_of_answers = df_temp['values'].sum()
+        
     ######################
     ## Convert amount of people responded into percentages
     number_of_answers = len(df.index)
@@ -646,6 +652,9 @@ def create_wordcloud(
     plt.axis("off")
     wordcloud.to_file('../' + save_name + '_wordmap.png')
 
+########################################################
+########   MORE SPECIFIC GRAPHS   ######################
+
 def create_date_heatmap(
     df,
     column_name,
@@ -719,6 +728,61 @@ def create_date_heatmap(
                             ha="center", va="center", color="w")
     
     plt.show()
+
+def create_more_less_bar(
+    df,
+    column_name,
+    title_label,
+    values_label,
+    title,
+    values_increment = None,
+    values_max = None,
+):
+#     df_temp.head(10)
+#     df = pd.DataFrame()
+#     if(df_a[column_name].isnull().values.any()):
+#         df[column_name] = df_a[column_name].dropna(axis=0)
+#     else:
+#         df = df_a
+        
+#     number_of_answers = len(df.index)
+#     print(number_of_answers)
+
+    
+    df_temp = df_more_less_no_effect(df, column_name)
+    
+    if(not values_max):
+        values_max = max(df_temp['Total'])
+        
+    if(not values_increment):
+        values_increment = math.ceil(values_max / 10)
+
+    fig, ax = plt.subplots(figsize = (11, 9))
+    ax.barh(
+        df_temp['Category'],
+        df_temp['Less'],
+        zorder = 3,
+    )
+    ax.barh(
+        df_temp['Category'],
+        df_temp['More'],
+        zorder = 3,
+    )
+    ax.barh(
+        df_temp['Category'],
+        df_temp['NE'],
+        zorder = 3,
+    )
+    
+    ax.set_xlabel(values_label)
+    ax.set_ylabel(title_label)
+    ax.xaxis.set_ticks(np.arange(0, values_max + values_increment, values_increment))
+    
+    plt.rcParams['axes.facecolor'] = '#F0F0F0'
+    ax.grid(color='w', linestyle='solid', zorder=0)
+    plt.legend(('Less', 'More', 'No Effect'), title="Legend", facecolor='white')
+    plt.title(title)
+    global_styling()
 
 
 #####################################################
