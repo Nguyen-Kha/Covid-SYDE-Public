@@ -23,6 +23,8 @@ def global_styling():
     }
     plt.rcParams.update(styles)
 
+# def boxplot_styling():
+
 # def apply_colours():
 
 #####################################################
@@ -194,8 +196,32 @@ def create_bar(
 
 # BOX PLOT
 
+def create_boxplot_matplotlib(
+    df,
+    column_name_key,
+    column_name_value,
+    title_label,
+    values_label,
+):
+"""
+Matplotlib looks ugly, but boxplot functions need to be improved on
+"""
+    dictionary = create_dict_with_values_of_type_list(df, column_name_key, column_name_value)
+    data_list_of_list = []
+    list_of_keys = []
+    for key, value in dictionary.items():
+        list_of_keys.append(key)
+        data_list_of_list.append(value)
 
-
+    fig, ax = plt.subplots(figsize=(11,9))
+    ax.boxplot(
+        data_list_of_list,
+        notch = False,
+        labels = list_of_keys,
+    )
+    ax.set_xlabel(title_label)
+    ax.set_ylabel(values_label)
+    plt.show()
 
 
 
@@ -744,7 +770,7 @@ def create_dict_with_values_of_type_list(df_a, column_name_key, column_name_valu
                 dictionary[single].append(df[column_name_value][i])
     
     return dictionary
-    
+
 
 def create_df_from_dict_of_list(df, column_name_key, column_name_value):
     """
@@ -776,6 +802,63 @@ def create_df_from_dict_of_list(df, column_name_key, column_name_value):
             dictionary[key].append(None)
         df_temp[key] = value
         
+    return df_temp
+
+def df_more_less_no_effect(
+    df,
+    column_name,
+):
+    """
+    Creates df columns:
+    Category    |   Less    |   More    |   NE  |   Total
+    """
+    values = splice_cells_with_commas(df, column_name)
+
+    statuses = []
+    for i in range (0, len(values)):
+        if(('More ') in values[i]):
+            status = (values[i].split("More "))
+            statuses.append(status[1])
+        elif(('Less ') in values[i]):
+            status = (values[i].split("Less "))
+            statuses.append(status[1])
+        else:
+            statuses.append(values[i])
+
+    statuses = set(statuses)
+
+    dict_statuses = {}
+    for status in statuses:
+        dict_statuses[status] = [0, 0, 0]
+
+    for i in range(0, len(values)):
+        for key, value in dict_statuses.items():
+    #         print(key, value, values[i])
+            if (key in values[i]):
+                if(('Less ') in values[i]):
+                    dict_statuses[key][0] += 1
+                elif(('More ') in values[i]):
+                    dict_statuses[key][1] += 1
+                else:
+                    dict_statuses[key][2] += 1
+
+
+    df_temp = pd.DataFrame({"Category": [], "Less" : [], "More": [], "NE" : []})
+    i = 0
+    for key, value in dict_statuses.items():
+        df_temp.loc[i] = [key] + value + []
+        i += 1
+
+    df_temp['Total'] = ""
+    df_temp['Less'] = df_temp['Less'].astype(int)
+    df_temp['More'] = df_temp['More'].astype(int)
+    df_temp['NE'] = df_temp['NE'].astype(int)
+
+    for i in range(0, len(df_temp)):
+        df_temp['Total'].loc[i] = df_temp['Less'].loc[i] + df_temp['More'].loc[i] + df_temp['NE'].loc[i]
+
+    df_temp = df_temp.sort_values(by='Total', ascending=True)
+
     return df_temp
 
 def create_postings_for_positions_df(df, column_name_key, column_name_value):
